@@ -1,7 +1,12 @@
 aid: brocade-communications-systems
-url: https://raw.githubusercontent.com/api-evangelist/brocade-communications-systems/refs/heads/main/apis.yml
+url: 
+  https://raw.githubusercontent.com/api-evangelist/brocade-communications-systems/refs/heads/main/apis.yml
 modified: '2026-03-23'
 apis: []
 common:
   - type: Website
     url: https://www.brocade-communications-systems.com
+description: >-
+  Brocade Communications Systems was a provider of data and storage networking products
+  and services, including switches, routers, and network management software for enterprises
+  and service providers.
