@@ -15,7 +15,7 @@ tags:
   - SAN
   - Storage Networking
   - Switches
-x-type: company
+kind: company
 apis:
   - aid: brocade-communications-systems:fabric-os-rest-api
     name: Brocade Fabric OS REST API
