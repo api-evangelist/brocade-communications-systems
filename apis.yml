@@ -15,6 +15,7 @@ tags:
   - SAN
   - Storage Networking
   - Switches
+  - Fortune 1000
 kind: company
 apis:
   - aid: brocade-communications-systems:fabric-os-rest-api
