@@ -1,0 +1,266 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Brocade Fabric OS REST API",
+    "version": "9.2.x"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Session",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Log in to a Fabric OS switch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switch-ip}/rest/login",
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Authenticate using basic credentials or an encrypted authorization token. Returns an authorization token in the response Authorization header."
+        },
+        {
+          "info": {
+            "name": "Log out of a session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switch-ip}/rest/logout"
+          },
+          "docs": "Log out of a session"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Chassis",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get chassis configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/running/brocade-chassis/chassis"
+          },
+          "docs": "Get chassis configuration"
+        },
+        {
+          "info": {
+            "name": "Update chassis configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{switch-ip}/rest/running/brocade-chassis/chassis",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update chassis configuration"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Switch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Fibre Channel switch attributes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/running/brocade-fibrechannel-switch/fibrechannel-switch"
+          },
+          "docs": "Get Fibre Channel switch attributes"
+        },
+        {
+          "info": {
+            "name": "Update Fibre Channel switch attributes",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{switch-ip}/rest/running/brocade-fibrechannel-switch/fibrechannel-switch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Fibre Channel switch attributes"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Interfaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Fibre Channel interfaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/running/brocade-interface/fibrechannel"
+          },
+          "docs": "List Fibre Channel interfaces"
+        },
+        {
+          "info": {
+            "name": "Get Fibre Channel interface statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/running/brocade-interface/fibrechannel-statistics"
+          },
+          "docs": "Get Fibre Channel interface statistics"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Zoning",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get defined zoning configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/running/brocade-zone/defined-configuration"
+          },
+          "docs": "Get defined zoning configuration"
+        },
+        {
+          "info": {
+            "name": "Update defined zoning",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{switch-ip}/rest/running/brocade-zone/defined-configuration",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update defined zoning"
+        },
+        {
+          "info": {
+            "name": "Get effective zoning configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/running/brocade-zone/effective-configuration"
+          },
+          "docs": "Get effective zoning configuration"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Operations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run zoning operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switch-ip}/rest/operations/zone",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "RPC operation for activating or disabling a zone configuration."
+        },
+        {
+          "info": {
+            "name": "Show asynchronous operation status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/operations/show-status",
+            "params": [
+              {
+                "name": "message-id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Show asynchronous operation status"
+        },
+        {
+          "info": {
+            "name": "Upload device configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switch-ip}/rest/operations/configupload",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upload device configuration"
+        },
+        {
+          "info": {
+            "name": "Download configuration to device",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switch-ip}/rest/operations/configdownload",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Download configuration to device"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
