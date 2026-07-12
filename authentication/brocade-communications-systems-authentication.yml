@@ -1,0 +1,21 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/brocade-communications-systems-openapi.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: BasicAuth
+  type: http
+  scheme: basic
+  sources:
+  - openapi/brocade-communications-systems-openapi.yml
+- name: SessionToken
+  type: apiKey
+  in: header
+  parameter: Authorization
+  sources:
+  - openapi/brocade-communications-systems-openapi.yml

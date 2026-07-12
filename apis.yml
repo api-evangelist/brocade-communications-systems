@@ -57,6 +57,10 @@ apis:
         url: https://techdocs.broadcom.com/us/en/fibre-channel-networking/sannav/management-portal-rest-api/3-0-0x.html
 
 common:
+  - type: DomainSecurity
+    url: security/brocade-communications-systems-domain-security.yml
+  - type: Authentication
+    url: authentication/brocade-communications-systems-authentication.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/brocade
   - type: Website
