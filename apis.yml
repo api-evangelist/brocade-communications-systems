@@ -57,6 +57,8 @@ apis:
         url: https://techdocs.broadcom.com/us/en/fibre-channel-networking/sannav/management-portal-rest-api/3-0-0x.html
 
 common:
+  - type: AgenticAccess
+    url: agentic-access/brocade-communications-systems-agentic-access.yml
   - type: DomainSecurity
     url: security/brocade-communications-systems-domain-security.yml
   - type: Authentication
