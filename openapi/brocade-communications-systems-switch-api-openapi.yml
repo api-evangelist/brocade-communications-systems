@@ -1,0 +1,57 @@
+openapi: 3.1.0
+info:
+  title: Brocade Fabric OS REST Chassis Switch API
+  description: The Brocade Fabric OS (FOS) REST API is a RESTCONF (RFC 8040) interface built on YANG 1.1 data models for managing Brocade SAN switches. It exposes operations for authentication, chassis, ports, zoning, security, and monitoring on Fabric OS 8.2.0 and later. Login returns an Authorization token used for subsequent calls.
+  version: 9.2.x
+  contact:
+    name: Brocade Fabric OS REST API
+    url: https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+servers:
+- url: https://{switch-ip}/rest
+  description: Brocade switch REST endpoint
+  variables:
+    switch-ip:
+      default: 10.0.0.1
+      description: IP address or hostname of the Brocade switch
+security:
+- BasicAuth: []
+- SessionToken: []
+tags:
+- name: Switch
+paths:
+  /running/brocade-fibrechannel-switch/fibrechannel-switch:
+    get:
+      summary: Get Fibre Channel switch attributes
+      operationId: getSwitch
+      tags:
+      - Switch
+      responses:
+        '200':
+          description: Switch details
+          content:
+            application/yang-data+json:
+              schema:
+                type: object
+    patch:
+      summary: Update Fibre Channel switch attributes
+      operationId: patchSwitch
+      tags:
+      - Switch
+      requestBody:
+        required: true
+        content:
+          application/yang-data+json:
+            schema:
+              type: object
+      responses:
+        '204':
+          description: Updated
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    SessionToken:
+      type: apiKey
+      in: header
+      name: Authorization

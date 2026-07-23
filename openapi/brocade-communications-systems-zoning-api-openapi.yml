@@ -1,0 +1,70 @@
+openapi: 3.1.0
+info:
+  title: Brocade Fabric OS REST Chassis Zoning API
+  description: The Brocade Fabric OS (FOS) REST API is a RESTCONF (RFC 8040) interface built on YANG 1.1 data models for managing Brocade SAN switches. It exposes operations for authentication, chassis, ports, zoning, security, and monitoring on Fabric OS 8.2.0 and later. Login returns an Authorization token used for subsequent calls.
+  version: 9.2.x
+  contact:
+    name: Brocade Fabric OS REST API
+    url: https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+servers:
+- url: https://{switch-ip}/rest
+  description: Brocade switch REST endpoint
+  variables:
+    switch-ip:
+      default: 10.0.0.1
+      description: IP address or hostname of the Brocade switch
+security:
+- BasicAuth: []
+- SessionToken: []
+tags:
+- name: Zoning
+paths:
+  /running/brocade-zone/defined-configuration:
+    get:
+      summary: Get defined zoning configuration
+      operationId: getDefinedZoning
+      tags:
+      - Zoning
+      responses:
+        '200':
+          description: Defined zoning
+          content:
+            application/yang-data+json:
+              schema:
+                type: object
+    patch:
+      summary: Update defined zoning
+      operationId: patchDefinedZoning
+      tags:
+      - Zoning
+      requestBody:
+        required: true
+        content:
+          application/yang-data+json:
+            schema:
+              type: object
+      responses:
+        '204':
+          description: Updated
+  /running/brocade-zone/effective-configuration:
+    get:
+      summary: Get effective zoning configuration
+      operationId: getEffectiveZoning
+      tags:
+      - Zoning
+      responses:
+        '200':
+          description: Effective zoning
+          content:
+            application/yang-data+json:
+              schema:
+                type: object
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    SessionToken:
+      type: apiKey
+      in: header
+      name: Authorization
