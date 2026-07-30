@@ -1,4 +1,18 @@
 aid: brocade-communications-systems
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/brocade-communications-systems.png
 name: Brocade Communications Systems
 url: https://raw.githubusercontent.com/api-evangelist/brocade-communications-systems/refs/heads/main/apis.yml
 description: >-
@@ -18,44 +32,111 @@ tags:
   - Fortune 1000
 kind: company
 apis:
-  - aid: brocade-communications-systems:fabric-os-rest-api
-    name: Brocade Fabric OS REST API
-    description: >-
-      The Brocade Fabric OS REST API provides programmable management of Brocade SAN
-      switches and directors running Fabric OS. YANG-based REST modules support chassis,
-      port, zoning, security, and performance configuration and monitoring for Fibre
-      Channel SAN environments.
-    humanURL: https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
-    baseURL: https://{switch-ip}/rest
-    tags:
-      - Fabric OS
-      - Fibre Channel
-      - Network Management
-      - SAN
-    properties:
-      - type: Documentation
-        url: https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
-      - type: GettingStarted
-        url: https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x/v26395730/v24190001.html
-
-  - aid: brocade-communications-systems:sannav-rest-api
-    name: Brocade SANnav Management Portal REST API
-    description: >-
-      The Brocade SANnav Management Portal REST API provides programmable access to
-      the SANnav SAN management platform. REST services include discovery, inventory,
-      fault management, health summary, user management, zoning, and proxy to Fabric OS
-      REST API.
-    humanURL: https://techdocs.broadcom.com/us/en/fibre-channel-networking/sannav/management-portal-rest-api/3-0-0x.html
-    baseURL: https://{sannav-host}/external-api/v1
-    tags:
-      - Monitoring
-      - SAN Management
-      - SANnav
-      - Zoning
-    properties:
-      - type: Documentation
-        url: https://techdocs.broadcom.com/us/en/fibre-channel-networking/sannav/management-portal-rest-api/3-0-0x.html
-
+- aid: brocade-communications-systems:fabric-os-rest-api
+  name: Brocade Fabric OS REST API
+  description: >-
+    The Brocade Fabric OS REST API provides programmable management of Brocade SAN switches and directors
+    running Fabric OS. YANG-based REST modules support chassis, port, zoning, security, and performance
+    configuration and monitoring for Fibre Channel SAN environments.
+  humanURL: >-
+    https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+  baseURL: https://{switch-ip}/rest
+  tags:
+  - Fabric OS
+  - Fibre Channel
+  - Network Management
+  - SAN
+  properties:
+  - type: Documentation
+    url: >-
+      https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+  - type: GettingStarted
+    url: >-
+      https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x/v26395730/v24190001.html
+- aid: brocade-communications-systems:sannav-rest-api
+  name: Brocade SANnav Management Portal REST API
+  description: >-
+    The Brocade SANnav Management Portal REST API provides programmable access to the SANnav SAN management
+    platform. REST services include discovery, inventory, fault management, health summary, user management,
+    zoning, and proxy to Fabric OS REST API.
+  humanURL: >-
+    https://techdocs.broadcom.com/us/en/fibre-channel-networking/sannav/management-portal-rest-api/3-0-0x.html
+  baseURL: https://{sannav-host}/external-api/v1
+  tags:
+  - Monitoring
+  - SAN Management
+  - SANnav
+  - Zoning
+  properties:
+  - type: Documentation
+    url: >-
+      https://techdocs.broadcom.com/us/en/fibre-channel-networking/sannav/management-portal-rest-api/3-0-0x.html
+- aid: brocade-communications-systems:brocade-communications-systems-chassis-api
+  name: Brocade Communications Systems Chassis API
+  description: The Chassis API from Brocade Communications Systems — 1 operation(s) for chassis.
+  humanURL: >-
+    https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+  baseURL: https://{switch-ip}/rest
+  tags:
+  - Chassis
+  properties:
+  - type: OpenAPI
+    url: openapi/brocade-communications-systems-chassis-api-openapi.yml
+- aid: brocade-communications-systems:brocade-communications-systems-interfaces-api
+  name: Brocade Communications Systems Interfaces API
+  description: The Interfaces API from Brocade Communications Systems — 2 operation(s) for interfaces.
+  humanURL: >-
+    https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+  baseURL: https://{switch-ip}/rest
+  tags:
+  - Interfaces
+  properties:
+  - type: OpenAPI
+    url: openapi/brocade-communications-systems-interfaces-api-openapi.yml
+- aid: brocade-communications-systems:brocade-communications-systems-operations-api
+  name: Brocade Communications Systems Operations API
+  description: The Operations API from Brocade Communications Systems — 4 operation(s) for operations.
+  humanURL: >-
+    https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+  baseURL: https://{switch-ip}/rest
+  tags:
+  - Operations
+  properties:
+  - type: OpenAPI
+    url: openapi/brocade-communications-systems-operations-api-openapi.yml
+- aid: brocade-communications-systems:brocade-communications-systems-session-api
+  name: Brocade Communications Systems Session API
+  description: The Session API from Brocade Communications Systems — 2 operation(s) for session.
+  humanURL: >-
+    https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+  baseURL: https://{switch-ip}/rest
+  tags:
+  - Session
+  properties:
+  - type: OpenAPI
+    url: openapi/brocade-communications-systems-session-api-openapi.yml
+- aid: brocade-communications-systems:brocade-communications-systems-switch-api
+  name: Brocade Communications Systems Switch API
+  description: The Switch API from Brocade Communications Systems — 1 operation(s) for switch.
+  humanURL: >-
+    https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+  baseURL: https://{switch-ip}/rest
+  tags:
+  - Switch
+  properties:
+  - type: OpenAPI
+    url: openapi/brocade-communications-systems-switch-api-openapi.yml
+- aid: brocade-communications-systems:brocade-communications-systems-zoning-api
+  name: Brocade Communications Systems Zoning API
+  description: The Zoning API from Brocade Communications Systems — 2 operation(s) for zoning.
+  humanURL: >-
+    https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+  baseURL: https://{switch-ip}/rest
+  tags:
+  - Zoning
+  properties:
+  - type: OpenAPI
+    url: openapi/brocade-communications-systems-zoning-api-openapi.yml
 common:
   - type: AgenticAccess
     url: agentic-access/brocade-communications-systems-agentic-access.yml
