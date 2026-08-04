@@ -1,0 +1,224 @@
+openapi: 3.1.0
+info:
+  title: Brocade Fabric OS REST API
+  description: >-
+    The Brocade Fabric OS (FOS) REST API is a RESTCONF (RFC 8040) interface
+    built on YANG 1.1 data models for managing Brocade SAN switches. It exposes
+    operations for authentication, chassis, ports, zoning, security, and
+    monitoring on Fabric OS 8.2.0 and later. Login returns an Authorization
+    token used for subsequent calls.
+  version: 9.2.x
+  contact:
+    name: Brocade Fabric OS REST API
+    url: https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+servers:
+  - url: https://{switch-ip}/rest
+    description: Brocade switch REST endpoint
+    variables:
+      switch-ip:
+        default: 10.0.0.1
+        description: IP address or hostname of the Brocade switch
+security:
+  - BasicAuth: []
+  - SessionToken: []
+tags:
+  - name: Session
+  - name: Chassis
+  - name: Switch
+  - name: Interfaces
+  - name: Zoning
+  - name: Operations
+paths:
+  /login:
+    post:
+      summary: Log in to a Fabric OS switch
+      description: Authenticate using basic credentials or an encrypted authorization token. Returns an authorization token in the response Authorization header.
+      operationId: login
+      tags: [Session]
+      security:
+        - BasicAuth: []
+      responses:
+        "200":
+          description: Authenticated session created
+          headers:
+            Authorization:
+              description: Session authorization token
+              schema: { type: string }
+  /logout:
+    post:
+      summary: Log out of a session
+      operationId: logout
+      tags: [Session]
+      responses:
+        "204":
+          description: Session terminated
+  /running/brocade-chassis/chassis:
+    get:
+      summary: Get chassis configuration
+      operationId: getChassis
+      tags: [Chassis]
+      responses:
+        "200":
+          description: Chassis details
+          content:
+            application/yang-data+json:
+              schema: { type: object }
+    patch:
+      summary: Update chassis configuration
+      operationId: patchChassis
+      tags: [Chassis]
+      requestBody:
+        required: true
+        content:
+          application/yang-data+json:
+            schema: { type: object }
+      responses:
+        "204": { description: Updated }
+  /running/brocade-fibrechannel-switch/fibrechannel-switch:
+    get:
+      summary: Get Fibre Channel switch attributes
+      operationId: getSwitch
+      tags: [Switch]
+      responses:
+        "200":
+          description: Switch details
+          content:
+            application/yang-data+json:
+              schema: { type: object }
+    patch:
+      summary: Update Fibre Channel switch attributes
+      operationId: patchSwitch
+      tags: [Switch]
+      requestBody:
+        required: true
+        content:
+          application/yang-data+json:
+            schema: { type: object }
+      responses:
+        "204": { description: Updated }
+  /running/brocade-interface/fibrechannel:
+    get:
+      summary: List Fibre Channel interfaces
+      operationId: getFcInterfaces
+      tags: [Interfaces]
+      responses:
+        "200":
+          description: Interface list
+          content:
+            application/yang-data+json:
+              schema: { type: object }
+  /running/brocade-interface/fibrechannel-statistics:
+    get:
+      summary: Get Fibre Channel interface statistics
+      operationId: getFcInterfaceStatistics
+      tags: [Interfaces]
+      responses:
+        "200":
+          description: Statistics
+          content:
+            application/yang-data+json:
+              schema: { type: object }
+  /running/brocade-zone/defined-configuration:
+    get:
+      summary: Get defined zoning configuration
+      operationId: getDefinedZoning
+      tags: [Zoning]
+      responses:
+        "200":
+          description: Defined zoning
+          content:
+            application/yang-data+json:
+              schema: { type: object }
+    patch:
+      summary: Update defined zoning
+      operationId: patchDefinedZoning
+      tags: [Zoning]
+      requestBody:
+        required: true
+        content:
+          application/yang-data+json:
+            schema: { type: object }
+      responses:
+        "204": { description: Updated }
+  /running/brocade-zone/effective-configuration:
+    get:
+      summary: Get effective zoning configuration
+      operationId: getEffectiveZoning
+      tags: [Zoning]
+      responses:
+        "200":
+          description: Effective zoning
+          content:
+            application/yang-data+json:
+              schema: { type: object }
+  /operations/zone:
+    post:
+      summary: Run zoning operation
+      description: RPC operation for activating or disabling a zone configuration.
+      operationId: zoneOperation
+      tags: [Operations]
+      requestBody:
+        required: true
+        content:
+          application/yang-data+json:
+            schema: { type: object }
+      responses:
+        "200":
+          description: Operation result
+          content:
+            application/yang-data+json:
+              schema: { type: object }
+  /operations/show-status:
+    get:
+      summary: Show asynchronous operation status
+      operationId: showStatus
+      tags: [Operations]
+      parameters:
+        - { name: message-id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Status
+          content:
+            application/yang-data+json:
+              schema: { type: object }
+  /operations/configupload:
+    post:
+      summary: Upload device configuration
+      operationId: configUpload
+      tags: [Operations]
+      requestBody:
+        required: true
+        content:
+          application/yang-data+json:
+            schema: { type: object }
+      responses:
+        "200":
+          description: Operation started
+          content:
+            application/yang-data+json:
+              schema: { type: object }
+  /operations/configdownload:
+    post:
+      summary: Download configuration to device
+      operationId: configDownload
+      tags: [Operations]
+      requestBody:
+        required: true
+        content:
+          application/yang-data+json:
+            schema: { type: object }
+      responses:
+        "200":
+          description: Operation started
+          content:
+            application/yang-data+json:
+              schema: { type: object }
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    SessionToken:
+      type: apiKey
+      in: header
+      name: Authorization

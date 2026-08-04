@@ -1,0 +1,24 @@
+{
+  "provider": "brocade-communications-systems",
+  "sources": [
+    "brocade-communications-systems-chassis-api-openapi.yml",
+    "brocade-communications-systems-interfaces-api-openapi.yml",
+    "brocade-communications-systems-operations-api-openapi.yml",
+    "brocade-communications-systems-session-api-openapi.yml",
+    "brocade-communications-systems-switch-api-openapi.yml",
+    "brocade-communications-systems-zoning-api-openapi.yml"
+  ],
+  "outputs": [
+    "brocade-communications-systems-chassis-api-openapi.yml",
+    "brocade-communications-systems-interfaces-api-openapi.yml",
+    "brocade-communications-systems-operations-api-openapi.yml",
+    "brocade-communications-systems-session-api-openapi.yml",
+    "brocade-communications-systems-switch-api-openapi.yml",
+    "brocade-communications-systems-zoning-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
