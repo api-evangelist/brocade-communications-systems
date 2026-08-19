@@ -1,0 +1,495 @@
+{
+  "item": [
+    {
+      "id": "367c22db-6adb-4f25-b0e3-af1badf506c0",
+      "name": "Operations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a23facba-d9b1-4347-9ebc-d5c8d41f8f97",
+          "name": "Run zoning operation",
+          "request": {
+            "name": "Run zoning operation",
+            "description": {
+              "content": "RPC operation for activating or disabling a zone configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "operations",
+                "zone"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/yang-data+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/yang-data+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "91615977-ee1c-4062-819e-92545a32fb9f",
+              "name": "Operation result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "operations",
+                    "zone"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/yang-data+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/yang-data+json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7a531ecd-37bb-4701-8b04-33c4117b743d",
+          "name": "Show asynchronous operation status",
+          "request": {
+            "name": "Show asynchronous operation status",
+            "description": {},
+            "url": {
+              "path": [
+                "operations",
+                "show-status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "message-id",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/yang-data+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a1db2922-8739-41a0-ada2-661c52d7829c",
+              "name": "Status",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "operations",
+                    "show-status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "message-id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/yang-data+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/yang-data+json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a1f113cf-8a2c-4e6a-8c68-19800f45f763",
+          "name": "Upload device configuration",
+          "request": {
+            "name": "Upload device configuration",
+            "description": {},
+            "url": {
+              "path": [
+                "operations",
+                "configupload"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/yang-data+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/yang-data+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c1f45e6f-786f-439f-be7e-1ecceadc6ac6",
+              "name": "Operation started",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "operations",
+                    "configupload"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/yang-data+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/yang-data+json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "99d9c8c0-1d13-402d-ba7c-9eab52deb144",
+          "name": "Download configuration to device",
+          "request": {
+            "name": "Download configuration to device",
+            "description": {},
+            "url": {
+              "path": [
+                "operations",
+                "configdownload"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/yang-data+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/yang-data+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "212b4f6e-3098-4d20-889e-8922f3223ce2",
+              "name": "Operation started",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "operations",
+                    "configdownload"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/yang-data+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/yang-data+json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "IP address or hostname of the Brocade switch",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "10.0.0.1",
+      "key": "switch-ip"
+    },
+    {
+      "type": "string",
+      "value": "https://{{switch-ip}}/rest",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "be016b46-eb8f-4646-9508-f9cf0104cfb2",
+    "name": "Brocade Fabric OS REST Chassis Operations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Brocade Fabric OS (FOS) REST API is a RESTCONF (RFC 8040) interface built on YANG 1.1 data models for managing Brocade SAN switches. It exposes operations for authentication, chassis, ports, zoning, security, and monitoring on Fabric OS 8.2.0 and later. Login returns an Authorization token used for subsequent calls.\n\nContact Support:\n Name: Brocade Fabric OS REST API",
+      "type": "text/plain"
+    }
+  }
+}

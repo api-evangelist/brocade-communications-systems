@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Brocade Fabric OS REST Chassis Switch API",
+    "version": "9.2.x"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Switch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Fibre Channel switch attributes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/running/brocade-fibrechannel-switch/fibrechannel-switch"
+          },
+          "docs": "Get Fibre Channel switch attributes"
+        },
+        {
+          "info": {
+            "name": "Update Fibre Channel switch attributes",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{switch-ip}/rest/running/brocade-fibrechannel-switch/fibrechannel-switch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Fibre Channel switch attributes"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

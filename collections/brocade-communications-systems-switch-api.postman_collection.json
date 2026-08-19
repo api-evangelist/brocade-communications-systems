@@ -1,0 +1,253 @@
+{
+  "item": [
+    {
+      "id": "f0876b63-5d85-4cb7-8ae5-c2b458b30936",
+      "name": "Switch",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "131986bc-e920-4653-93bb-edf50021d14a",
+          "name": "Get Fibre Channel switch attributes",
+          "request": {
+            "name": "Get Fibre Channel switch attributes",
+            "description": {},
+            "url": {
+              "path": [
+                "running",
+                "brocade-fibrechannel-switch",
+                "fibrechannel-switch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/yang-data+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d5bec254-82bd-43d1-8842-40e5edd2a1aa",
+              "name": "Switch details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "running",
+                    "brocade-fibrechannel-switch",
+                    "fibrechannel-switch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/yang-data+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/yang-data+json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cf6933fe-7cf1-44ad-80a6-20c085eb9e8f",
+          "name": "Update Fibre Channel switch attributes",
+          "request": {
+            "name": "Update Fibre Channel switch attributes",
+            "description": {},
+            "url": {
+              "path": [
+                "running",
+                "brocade-fibrechannel-switch",
+                "fibrechannel-switch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/yang-data+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d42ab771-2888-4e19-bc89-0bab18c8eba4",
+              "name": "Updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "running",
+                    "brocade-fibrechannel-switch",
+                    "fibrechannel-switch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "IP address or hostname of the Brocade switch",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "10.0.0.1",
+      "key": "switch-ip"
+    },
+    {
+      "type": "string",
+      "value": "https://{{switch-ip}}/rest",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8f9dfa3c-5304-4b11-9c5f-a3999c329ae4",
+    "name": "Brocade Fabric OS REST Chassis Switch API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Brocade Fabric OS (FOS) REST API is a RESTCONF (RFC 8040) interface built on YANG 1.1 data models for managing Brocade SAN switches. It exposes operations for authentication, chassis, ports, zoning, security, and monitoring on Fabric OS 8.2.0 and later. Login returns an Authorization token used for subsequent calls.\n\nContact Support:\n Name: Brocade Fabric OS REST API",
+      "type": "text/plain"
+    }
+  }
+}

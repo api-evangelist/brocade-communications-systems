@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Brocade Fabric OS REST Chassis Interfaces API",
+    "version": "9.2.x"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Interfaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Fibre Channel interfaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/running/brocade-interface/fibrechannel"
+          },
+          "docs": "List Fibre Channel interfaces"
+        },
+        {
+          "info": {
+            "name": "Get Fibre Channel interface statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/running/brocade-interface/fibrechannel-statistics"
+          },
+          "docs": "Get Fibre Channel interface statistics"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

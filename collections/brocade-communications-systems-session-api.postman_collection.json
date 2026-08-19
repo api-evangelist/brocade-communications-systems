@@ -1,0 +1,227 @@
+{
+  "item": [
+    {
+      "id": "6e7f566d-6181-4afe-a4a7-723271c351d3",
+      "name": "Session",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "50eba7a7-0402-4b10-ad5f-94112c180a5e",
+          "name": "Log in to a Fabric OS switch",
+          "request": {
+            "name": "Log in to a Fabric OS switch",
+            "description": {
+              "content": "Authenticate using basic credentials or an encrypted authorization token. Returns an authorization token in the response Authorization header.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "login"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "086930d5-9aec-429e-81ce-7d094512e9c5",
+              "name": "Authenticated session created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "login"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "45ebd0e7-f00f-4177-b9da-6fb1c874e949",
+          "name": "Log out of a session",
+          "request": {
+            "name": "Log out of a session",
+            "description": {},
+            "url": {
+              "path": [
+                "logout"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "069df4e6-6a79-4a32-90fa-aa89b00f6d2d",
+              "name": "Session terminated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "logout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "IP address or hostname of the Brocade switch",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "10.0.0.1",
+      "key": "switch-ip"
+    },
+    {
+      "type": "string",
+      "value": "https://{{switch-ip}}/rest",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "202cfca1-cdc4-42ad-bc9c-49c0b97e8fd6",
+    "name": "Brocade Fabric OS REST Chassis Session API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Brocade Fabric OS (FOS) REST API is a RESTCONF (RFC 8040) interface built on YANG 1.1 data models for managing Brocade SAN switches. It exposes operations for authentication, chassis, ports, zoning, security, and monitoring on Fabric OS 8.2.0 and later. Login returns an Authorization token used for subsequent calls.\n\nContact Support:\n Name: Brocade Fabric OS REST API",
+      "type": "text/plain"
+    }
+  }
+}

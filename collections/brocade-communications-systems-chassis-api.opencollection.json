@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Brocade Fabric OS REST Chassis API",
+    "version": "9.2.x"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Chassis",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get chassis configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/running/brocade-chassis/chassis"
+          },
+          "docs": "Get chassis configuration"
+        },
+        {
+          "info": {
+            "name": "Update chassis configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{switch-ip}/rest/running/brocade-chassis/chassis",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update chassis configuration"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

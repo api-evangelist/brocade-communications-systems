@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Brocade Fabric OS REST Chassis Zoning API",
+    "version": "9.2.x"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Zoning",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get defined zoning configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/running/brocade-zone/defined-configuration"
+          },
+          "docs": "Get defined zoning configuration"
+        },
+        {
+          "info": {
+            "name": "Update defined zoning",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{switch-ip}/rest/running/brocade-zone/defined-configuration",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update defined zoning"
+        },
+        {
+          "info": {
+            "name": "Get effective zoning configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/running/brocade-zone/effective-configuration"
+          },
+          "docs": "Get effective zoning configuration"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

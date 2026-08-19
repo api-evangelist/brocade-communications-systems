@@ -1,0 +1,52 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Brocade Fabric OS REST Chassis Session API",
+    "version": "9.2.x"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Session",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Log in to a Fabric OS switch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switch-ip}/rest/login",
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Authenticate using basic credentials or an encrypted authorization token. Returns an authorization token in the response Authorization header."
+        },
+        {
+          "info": {
+            "name": "Log out of a session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switch-ip}/rest/logout"
+          },
+          "docs": "Log out of a session"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

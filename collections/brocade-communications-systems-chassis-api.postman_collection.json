@@ -1,0 +1,253 @@
+{
+  "item": [
+    {
+      "id": "9ae5046f-0ccf-4603-b071-46fda6bf2810",
+      "name": "Chassis",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "83d63c0d-9dd0-432c-8abd-e3eb6778bffc",
+          "name": "Get chassis configuration",
+          "request": {
+            "name": "Get chassis configuration",
+            "description": {},
+            "url": {
+              "path": [
+                "running",
+                "brocade-chassis",
+                "chassis"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/yang-data+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a18cb731-2ec9-4e58-bbfe-a9fbfbec59b5",
+              "name": "Chassis details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "running",
+                    "brocade-chassis",
+                    "chassis"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/yang-data+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/yang-data+json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4980faa5-06ff-4857-8edf-9f6cc0412196",
+          "name": "Update chassis configuration",
+          "request": {
+            "name": "Update chassis configuration",
+            "description": {},
+            "url": {
+              "path": [
+                "running",
+                "brocade-chassis",
+                "chassis"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/yang-data+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1e6bd2fe-8b42-4aa7-8f04-1bbe94a3e0ed",
+              "name": "Updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "running",
+                    "brocade-chassis",
+                    "chassis"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "IP address or hostname of the Brocade switch",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "10.0.0.1",
+      "key": "switch-ip"
+    },
+    {
+      "type": "string",
+      "value": "https://{{switch-ip}}/rest",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "65c5d6a9-65c2-4774-983d-02678c00fd32",
+    "name": "Brocade Fabric OS REST Chassis API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Brocade Fabric OS (FOS) REST API is a RESTCONF (RFC 8040) interface built on YANG 1.1 data models for managing Brocade SAN switches. It exposes operations for authentication, chassis, ports, zoning, security, and monitoring on Fabric OS 8.2.0 and later. Login returns an Authorization token used for subsequent calls.\n\nContact Support:\n Name: Brocade Fabric OS REST API",
+      "type": "text/plain"
+    }
+  }
+}

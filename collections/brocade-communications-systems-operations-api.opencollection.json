@@ -1,0 +1,88 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Brocade Fabric OS REST Chassis Operations API",
+    "version": "9.2.x"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Operations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run zoning operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switch-ip}/rest/operations/zone",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "RPC operation for activating or disabling a zone configuration."
+        },
+        {
+          "info": {
+            "name": "Show asynchronous operation status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switch-ip}/rest/operations/show-status",
+            "params": [
+              {
+                "name": "message-id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Show asynchronous operation status"
+        },
+        {
+          "info": {
+            "name": "Upload device configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switch-ip}/rest/operations/configupload",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upload device configuration"
+        },
+        {
+          "info": {
+            "name": "Download configuration to device",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switch-ip}/rest/operations/configdownload",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Download configuration to device"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

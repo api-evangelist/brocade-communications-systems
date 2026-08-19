@@ -1,0 +1,346 @@
+{
+  "item": [
+    {
+      "id": "cf5383fc-802f-42c8-a397-57ccb3088d5a",
+      "name": "Zoning",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1c4c4081-bc54-41d1-9c10-5f3c5ffd5788",
+          "name": "Get defined zoning configuration",
+          "request": {
+            "name": "Get defined zoning configuration",
+            "description": {},
+            "url": {
+              "path": [
+                "running",
+                "brocade-zone",
+                "defined-configuration"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/yang-data+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "31459157-9588-4cec-a012-97327aed1115",
+              "name": "Defined zoning",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "running",
+                    "brocade-zone",
+                    "defined-configuration"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/yang-data+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/yang-data+json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "67fc9171-617e-4e22-8110-40c913641ead",
+          "name": "Update defined zoning",
+          "request": {
+            "name": "Update defined zoning",
+            "description": {},
+            "url": {
+              "path": [
+                "running",
+                "brocade-zone",
+                "defined-configuration"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/yang-data+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "778a7889-ee13-4199-a812-53e27fa86107",
+              "name": "Updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "running",
+                    "brocade-zone",
+                    "defined-configuration"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ad7f5dd7-510f-4c35-9480-3ab696d3c1bb",
+          "name": "Get effective zoning configuration",
+          "request": {
+            "name": "Get effective zoning configuration",
+            "description": {},
+            "url": {
+              "path": [
+                "running",
+                "brocade-zone",
+                "effective-configuration"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "IP address or hostname of the Brocade switch",
+                  "type": "any",
+                  "value": "{{switch-ip}}",
+                  "key": "switch-ip"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/yang-data+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "43c70220-f347-4d83-8964-575298b4c563",
+              "name": "Effective zoning",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "running",
+                    "brocade-zone",
+                    "effective-configuration"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "IP address or hostname of the Brocade switch",
+                      "type": "any",
+                      "value": "{{switch-ip}}",
+                      "key": "switch-ip"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/yang-data+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/yang-data+json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "IP address or hostname of the Brocade switch",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "10.0.0.1",
+      "key": "switch-ip"
+    },
+    {
+      "type": "string",
+      "value": "https://{{switch-ip}}/rest",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "93e9a0d9-822f-4dcd-8963-a38a3f719976",
+    "name": "Brocade Fabric OS REST Chassis Zoning API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Brocade Fabric OS (FOS) REST API is a RESTCONF (RFC 8040) interface built on YANG 1.1 data models for managing Brocade SAN switches. It exposes operations for authentication, chassis, ports, zoning, security, and monitoring on Fabric OS 8.2.0 and later. Login returns an Authorization token used for subsequent calls.\n\nContact Support:\n Name: Brocade Fabric OS REST API",
+      "type": "text/plain"
+    }
+  }
+}
