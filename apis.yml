@@ -99,7 +99,8 @@ apis:
   humanURL: >-
     https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
   baseURL: https://{switch-ip}/rest
-  tags:
+  tags: []
+  tags_raw:
   - Operations
   properties:
   - type: OpenAPI
