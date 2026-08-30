@@ -151,6 +151,11 @@ apis:
   - type: OpenAPI
     url: openapi/brocade-communications-systems-zoning-api-openapi.yml
 common:
+  - type: ParentCompany
+    url: https://apis.io/providers/broadcom/
+    name: Broadcom
+    x-relationship: acquired
+    x-evidence: "Brocade was acquired by Broadcom in 2017."
   - type: AgenticAccess
     url: agentic-access/brocade-communications-systems-agentic-access.yml
   - type: DomainSecurity
