@@ -1,0 +1,93 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  https://pypi.org/pypi/pyfos/json, https://pypi.org/pypi/pynos/json,
+  https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/brocade/fos/,
+  https://github.com/brocade
+provider: Brocade Communications Systems
+providerId: brocade-communications-systems
+description: >-
+  First-party client libraries and automation content published by Brocade (a Broadcom company)
+  for the Fabric OS REST API. Registry metadata was read unauthenticated from PyPI and Ansible
+  Galaxy on 2026-09-04; versions and publication dates below are the registries' own values.
+summary:
+  package_count: 3
+  official_count: 3
+  registries:
+  - pypi
+  - ansible-galaxy
+  currency_note: >-
+    The Ansible collection is actively maintained (2.1.0, 2026-04-30). The Python SDK pyfos has
+    not published a release since 2021-03-06 while the API it wraps has shipped Fabric OS 9.2.x
+    and 10.0.x — a first-party SDK trailing its own contract by several major firmware releases.
+packages:
+- name: brocade.fos
+  language: ansible
+  registry: ansible-galaxy
+  official: true
+  url: https://galaxy.ansible.com/ui/repo/published/brocade/fos/
+  registry_api: https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/brocade/fos/
+  repository: https://github.com/brocade/ansible
+  version: 2.1.0
+  published: '2026-04-30'
+  license: GPL-3.0-or-later, BSD-2-Clause
+  authors:
+  - Brocade Automation Team <Automation.BSN@broadcom.com>
+  downloads: 247524
+  description: Collection of modules to manage Brocade FOS Fibre Channel (FC) switches.
+  wraps: Brocade Fabric OS REST API
+  note: >-
+    Authorship string on the Galaxy release names the Brocade Automation Team at broadcom.com,
+    which is what establishes this as first-party rather than community content.
+- name: pyfos
+  language: python
+  registry: pypi
+  official: true
+  url: https://pypi.org/project/pyfos/
+  registry_api: https://pypi.org/pypi/pyfos/json
+  repository: https://github.com/brocade/pyfos
+  version: 2.0.1
+  published: '2021-03-06'
+  author: Brocade Communications Systems LLC.
+  description: Python library for the Brocade Fabric OS REST API (PyFOS).
+  wraps: Brocade Fabric OS REST API
+  note: >-
+    Last PyPI release 2021-03-06; the GitHub repository last saw a push 2023-08-21. The FOS REST
+    API reference manual it targets has been revised through 2026-02-24 (FOS-92x-REST-API-RM104)
+    and a 10.0.x manual now exists, so the published SDK trails the documented contract.
+- name: pynos
+  language: python
+  registry: pypi
+  official: true
+  status: legacy
+  url: https://pypi.org/project/pynos/
+  registry_api: https://pypi.org/pypi/pynos/json
+  repository: https://github.com/brocade/pynos
+  version: 1.3.27
+  published: '2017-07-17'
+  author: Brocade Communications Systems, Inc.
+  description: Python library for Brocade Network OS (NOS) VDX switches.
+  wraps: Brocade Network OS (NOS)
+  note: >-
+    Predates the Broadcom acquisition and targets the VDX/Network OS IP-networking line that was
+    sold to Extreme Networks in 2017. Recorded for completeness; not a client for either API
+    catalogued in this repo.
+excluded:
+- name: brocade
+  registry: npm
+  reason: >-
+    npm package `brocade` (0.0.1, 2018-02-06) is an unrelated decorator library published by
+    github.com/reasonink — not Brocade Communications Systems.
+- name: pysdn
+  registry: pypi
+  reason: >-
+    PyPI `pysdn` is published by Crossbar.io Technologies GmbH, not Brocade. The Brocade
+    repository github.com/brocade/pysdn is archived and has no matching registry release.
+- name: pybvc
+  registry: pypi
+  reason: >-
+    PyPI `pybvc` (1.3.4, 2015-10-02) is authored by Elbrys Networks for the discontinued Brocade
+    Vyatta Controller; the Brocade repository is archived and labelled DO-NOT-USE.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

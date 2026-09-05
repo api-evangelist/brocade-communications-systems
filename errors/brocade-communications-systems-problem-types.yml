@@ -1,0 +1,127 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  FOS-92x-REST-API-RM104 Table 4 "Supported HTTP Status Codes",
+  https://techdocs.broadcom.com/content/dam/broadcom/techdocs/us/en/pdf/fc-networking/software-restapi/fos-92x-restapi.pdf
+docs: >-
+  https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+provider: Brocade Communications Systems
+providerId: brocade-communications-systems
+description: >-
+  Error catalog for the Brocade Fabric OS REST API, transcribed from the provider's published
+  status-code table. The API does not implement RFC 9457 problem+json; error detail arrives as
+  the application message inside a yang-data body on 500, and otherwise the status line is the
+  whole signal.
+format: http-status
+rfc9457: false
+envelope:
+  media_type: application/yang-data+xml (default) or application/yang-data+json
+  detail_field: >-
+    On 500 Internal Server Error the response body carries the application's specific error
+    message; the reference manual notes these messages are similar to Fabric OS CLI responses.
+  note: >-
+    No stable machine-readable error code registry is published for the REST surface. Codes
+    below are HTTP status values, not vendor error identifiers.
+summary:
+  status_codes: 16
+  client_errors: 6
+  server_errors: 4
+problem_types:
+- status: 100
+  title: Continue
+  meaning: POST is accepted; 201 should follow.
+  class: informational
+- status: 200
+  title: OK
+  meaning: Success with response body.
+  class: success
+- status: 201
+  title: Created
+  meaning: Request successfully created a resource.
+  class: success
+- status: 202
+  title: Accepted
+  meaning: Request to create a resource accepted.
+  class: success
+- status: 204
+  title: No Content
+  meaning: Success without a response body.
+  class: success
+  note: Returned by a successful DELETE.
+- status: 400
+  title: Bad Request
+  meaning: Invalid request message.
+  class: client
+  remediation: >-
+    Check the yang-data body against the module's .yang definition. Non-key leafs sent alongside
+    key leafs on a GET are ignored rather than rejected, so a 400 usually means a malformed body,
+    a bad key leaf, or an unencoded reserved character in a query parameter.
+- status: 403
+  title: Forbidden
+  meaning: Access to resource denied.
+  class: client
+  remediation: >-
+    The account's Fabric OS role lacks the RBAC class the URL requires. Inspect per-URL RBAC with
+    `mgmtapp --show rbacinfo`. root and maintenance cannot use the REST API at all.
+- status: 404
+  title: Not Found
+  meaning: Resource target or resource node not found.
+  class: client
+  remediation: >-
+    Confirm the module is present on the running firmware, and that the resource was not
+    deprecated or made obsolete — see lifecycle/brocade-communications-systems-lifecycle.yml.
+- status: 405
+  title: Method Not Allowed
+  meaning: Method not allowed for target resource.
+  class: client
+  remediation: >-
+    Each module publishes its supported methods; many operation modules accept only POST and
+    OPTIONS. Send OPTIONS to the URL to learn what it allows.
+- status: 413
+  title: Request Entity Too Large
+  meaning: The request entity is too large.
+  class: client
+  remediation: >-
+    The maximum zone-database transaction size the REST API can handle is 4 MB. Split large
+    zoning changes across transactions.
+- status: 414
+  title: Request URI Too Large
+  meaning: The request URI is too large.
+  class: client
+- status: 415
+  title: Unsupported Media Type
+  meaning: Not a supported media type.
+  class: client
+  remediation: >-
+    Set Accept and Content-Type to application/yang-data+json, or omit both to get the XML
+    default. No other media types are accepted.
+- status: 500
+  title: Internal Server Error
+  meaning: >-
+    Operation failed. The response body contains the application's specific error message.
+  class: server
+  remediation: Read the application message in the body; it mirrors the Fabric OS CLI error text.
+- status: 501
+  title: Not Implemented
+  meaning: Unknown operation.
+  class: server
+- status: 502
+  title: Server Busy
+  meaning: Server busy error.
+  class: server
+  remediation: Back off and retry; the switch is servicing other management clients.
+- status: 503
+  title: Service Unavailable
+  meaning: Recoverable server error.
+  class: server
+  remediation: >-
+    Retry up to 3 times, per the provider's own client guidance, and add a one second delay
+    between requests in large fabrics.
+not_returned:
+  - status: 429
+    note: >-
+      No 429 appears in the supported status-code table and no rate-limit headers are documented.
+      Session pressure surfaces as a login failure against the maxrestsession cap, or as 502/503.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,166 @@
+generated: '2026-09-04'
+method: derived
+source: >-
+  openapi/*.yml in this repository, cross-checked against the YANG module tables in
+  FOS-92x-REST-API-RM104 and the module sources at https://github.com/brocade/yang
+provider: Brocade Communications Systems
+providerId: brocade-communications-systems
+description: >-
+  Entity graph for the Brocade Fabric OS REST API. The relationships are not inferred from
+  OpenAPI $refs — the captured specs use opaque `type: object` bodies — they are read from the
+  YANG containment hierarchy the API is a projection of, where the datastore path itself encodes
+  the parent/child relation (/running/<module>/<container>).
+model:
+  type: yang-containment
+  root: /running
+  note: >-
+    In RESTCONF the URL is the model. A chassis contains logical switches; a logical switch owns
+    Fibre Channel interfaces; the zone database is scoped to a logical switch (Virtual Fabric,
+    selected with the vf-id query parameter) and references port and device WWNs by value rather
+    than by link.
+entities:
+- name: chassis
+  path: /running/brocade-chassis/chassis
+  module: brocade-chassis
+  module_version: 2.0.0
+  operations:
+  - getChassis
+  - patchChassis
+  description: The physical switch or director enclosure. One per managed device.
+  identity: chassis WWN / chassis name
+  relationships:
+  - type: has_many
+    target: fibrechannel-switch
+    via: logical switch instances hosted in the chassis (Virtual Fabrics)
+- name: fibrechannel-switch
+  path: /running/brocade-fibrechannel-switch/fibrechannel-switch
+  module: brocade-fibrechannel-switch
+  module_version: 4.0.0
+  operations:
+  - getSwitch
+  - patchSwitch
+  description: >-
+    A Fibre Channel switch instance. With Virtual Fabrics enabled a chassis presents several,
+    each selected by vf-id.
+  identity: switch WWN, domain ID, fabric user friendly name
+  relationships:
+  - type: belongs_to
+    target: chassis
+    via: chassis-wwn
+  - type: has_many
+    target: fibrechannel-interface
+    via: ports owned by the logical switch
+  - type: has_one
+    target: zone-defined-configuration
+    via: the switch's zone database (vf-scoped)
+- name: fibrechannel-interface
+  path: /running/brocade-interface/fibrechannel
+  module: brocade-interface
+  module_version: 4.0.0
+  operations:
+  - getFcInterfaces
+  description: A Fibre Channel port. Keyed by slot/port name, e.g. "4/5".
+  identity: name (slot/port)
+  relationships:
+  - type: belongs_to
+    target: fibrechannel-switch
+    via: the logical switch the port is assigned to
+  - type: has_one
+    target: fibrechannel-statistics
+    via: name (same slot/port key)
+- name: fibrechannel-statistics
+  path: /running/brocade-interface/fibrechannel-statistics
+  module: brocade-interface
+  operations:
+  - getFcInterfaceStatistics
+  description: Per-port counters and error statistics; read-only telemetry parallel to the port.
+  identity: name (slot/port)
+  relationships:
+  - type: belongs_to
+    target: fibrechannel-interface
+    via: name
+- name: zone-defined-configuration
+  path: /running/brocade-zone/defined-configuration
+  module: brocade-zone
+  module_version: 2.0.0
+  operations:
+  - getDefinedZoning
+  - patchDefinedZoning
+  description: >-
+    The defined zone database — every zone, alias and zone configuration that exists on the
+    switch, whether or not it is enforced. Edited inside a transaction; guarded by a checksum.
+  relationships:
+  - type: belongs_to
+    target: fibrechannel-switch
+    via: vf-id (Virtual Fabric context)
+  - type: has_many
+    target: zone
+    via: cfg / zone / alias lists inside the container
+- name: zone-effective-configuration
+  path: /running/brocade-zone/effective-configuration
+  module: brocade-zone
+  operations:
+  - getEffectiveZoning
+  description: >-
+    The single zone configuration currently enforced in the fabric, plus transaction state
+    (checksum, transaction token, default-zone access mode).
+  relationships:
+  - type: has_one
+    target: zone-defined-configuration
+    via: cfg-name — names which defined configuration is active
+- name: zone
+  description: >-
+    A named set of members (port WWNs, aliases, or domain/port pairs) that may communicate. Not a
+    separate URL; a list inside the zone containers.
+  relationships:
+  - type: belongs_to
+    target: zone-defined-configuration
+  - type: has_many
+    target: zone-member
+    via: member-entry (WWN or D,P)
+- name: session
+  path: /login, /logout
+  operations:
+  - login
+  - logout
+  description: >-
+    A REST session. Not a datastore resource — a control-plane object with an Authorization token,
+    a 2-hour default idle timeout, and a slot against the switch's maxrestsession cap (default 3).
+  relationships:
+  - type: belongs_to
+    target: chassis
+    via: the switch or chassis the session is opened against
+  - type: has_one
+    target: zone-transaction
+    via: >-
+      A zone transaction is bound to the session ID. Logging out and back in cancels a dangling
+      transaction — the switch treats the new session as a different client.
+- name: operation-status
+  path: /operations/show-status
+  operations:
+  - showStatus
+  description: >-
+    Asynchronous RPC result, addressed by the message-id returned when the RPC was accepted
+    (POST /operations/show-status/message-id/<id>).
+  relationships:
+  - type: belongs_to
+    target: rpc-operation
+    via: message-id
+identifiers:
+  wwn: >-
+    World Wide Name, colon-separated hex (20:04:00:11:0d:75:00:09). The universal identity for
+    chassis, switch, port and attached device. Must be percent-encoded when used in a query
+    parameter — the colon is a reserved character under RFC 3986.
+  slot_port: Interface names are "slot/port" strings, e.g. "4/5".
+  vf_id: Integer Virtual Fabric identifier, supplied as the vf-id query parameter.
+  message_id: Integer identifier for an in-flight asynchronous RPC.
+coverage:
+  entities: 9
+  note: >-
+    Derived from the six OpenAPI documents held in this repository, which cover 6 of the 41
+    Brocade YANG modules in Fabric OS 9.2.1. Access gateway, MAPS, FICON, firmware, licensing,
+    security, extension, IP storage, name server and FDMI entities exist in the API and are not
+    modelled here.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

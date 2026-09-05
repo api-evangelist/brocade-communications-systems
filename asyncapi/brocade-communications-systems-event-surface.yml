@@ -1,0 +1,102 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  https://techdocs.broadcom.com/us/en/fibre-channel-networking/sannav/management-portal-rest-api/3-0-0x/Resources-REST-API/Fault-Module-REST-API.html
+  and the EventRecipientDetails definition at
+  https://techdocs.broadcom.com/us/en/fibre-channel-networking/sannav/management-portal-rest-api/3-0-0x/definitions-23x/eventrecipientdetails1.html
+provider: Brocade Communications Systems
+providerId: brocade-communications-systems
+description: >-
+  Event surface finding for Brocade. There IS a real event subscription API — SANnav's Fault
+  module lets a client subscribe and unsubscribe event recipients over REST — but the events are
+  not delivered over HTTP. The recipient type is an enum of SNMP or SYSLOG, so this is not a
+  webhook surface and there is no AsyncAPI to harvest. Recorded so the absence is a measured
+  result rather than an unexamined gap.
+asyncapi:
+  published: false
+  searched:
+  - github.com/brocade (27 public repos, no .yaml/.json AsyncAPI document)
+  - Broadcom TechDocs for Fabric OS REST API 9.2.x and 10.0.x
+  - Broadcom TechDocs for SANnav Management Portal REST API 3.0.0x
+webhooks:
+  published: false
+  reason: >-
+    SANnav forwards events to SNMP trap receivers and syslog hosts, not to HTTP callback URLs.
+    No Webhooks pointer is emitted in apis.yml because asserting one would claim a delivery
+    mechanism the provider does not offer.
+event_surface:
+  api: Brocade SANnav Management Portal REST API
+  module: Fault
+  docs: >-
+    https://techdocs.broadcom.com/us/en/fibre-channel-networking/sannav/management-portal-rest-api/3-0-0x/Resources-REST-API/Fault-Module-REST-API.html
+  operations:
+  - method: POST
+    path: /external-api/v2/fault/events/
+    description: Retrieve a filtered list of events.
+  - method: POST
+    path: /external-api/v1/fault/events/acknowledge
+    description: Acknowledge events.
+  - method: POST
+    path: /external-api/v1/fault/events/unacknowledge
+    description: Unacknowledge events.
+  - method: POST
+    path: /external-api/v2/fault/events/forwarding/subscribe
+    description: >-
+      Create an event recipient. Body is a single required messageDetail of type
+      EventRecipientDetails. Returns 200 "Event recipient created"; 412 Precondition Failed if the
+      recipient already exists — which makes creation naturally safe to repeat.
+  - method: POST
+    path: /external-api/v2/fault/events/forwarding/unsubscribe
+    description: Remove an event recipient. This is the reversal of subscribe.
+  - method: GET
+    path: /external-api/v1/fault/events/forwarding/destination
+    description: Retrieve the configured forwarding destinations.
+  subscription_model:
+    object: EventRecipientDetails
+    fields:
+    - name: recipientType
+      type: enum
+      required: true
+      values:
+      - SNMP
+      - SYSLOG
+      note: This is the field that settles it — there is no HTTP/webhook option.
+    - name: recipientAddress
+      type: string
+      required: true
+      description: The recipient IP address.
+    - name: port
+      type: integer
+      required: true
+      description: The port number for the recipient, 1 to 65535.
+    - name: products
+      type: string[]
+      required: false
+      description: Virtual switch WWNs; events from these products are forwarded.
+    - name: criteria
+      type: ForwardingEventsFilterQueryDetails
+      required: false
+      description: Event filter criteria based on event attributes.
+    - name: description
+      type: string
+      required: false
+    - name: tags
+      type: string
+      required: false
+      description: User-defined comma-separated tags.
+  transports:
+  - snmp-trap
+  - syslog
+  reversibility:
+    reversal: POST /external-api/v2/fault/events/forwarding/unsubscribe
+    window: not stated
+    grade: documented
+observations:
+  api_version_in_path: >-
+    The Fault module mixes /external-api/v1 and /external-api/v2 paths. The baseURL recorded in
+    apis.yml, https://{sannav-host}/external-api/v1, is the version the reference manual titles
+    the API with; v2 operations sit alongside it under the same host. A client should treat the
+    version as part of the path, not part of the base.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

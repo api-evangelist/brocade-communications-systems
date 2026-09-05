@@ -1,0 +1,170 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  FOS-92x-REST-API-RM104 sections "Standards and Related References", "FOS REST API Described",
+  "YANG Module Overview", "Media Types" and "Query Parameter Support",
+  https://techdocs.broadcom.com/content/dam/broadcom/techdocs/us/en/pdf/fc-networking/software-restapi/fos-92x-restapi.pdf
+  plus the media types and datastore paths in openapi/ in this repo.
+docs: >-
+  https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+provider: Brocade Communications Systems
+providerId: brocade-communications-systems
+description: >-
+  Standards conformance for the Brocade Fabric OS REST API. This is not a REST-by-convention API
+  that happens to cite standards on a marketing page: the contract itself is an IETF RESTCONF
+  interface over IETF YANG 1.1 models, and that shows in the media type, the datastore path
+  prefix and the runtime module library.
+domain_standard:
+  standard: RESTCONF (RFC 8040) over YANG 1.1 (RFC 7950)
+  market: network and storage-fabric device management
+  declared_in_contract: true
+  signature:
+  - >-
+    Media type application/yang-data+json / application/yang-data+xml on every request and
+    response — the RESTCONF media type, present verbatim in every openapi/ file in this repo.
+  - >-
+    Datastore-rooted paths: /running/brocade-chassis/chassis, /running/brocade-zone/
+    defined-configuration, /running/brocade-interface/fibrechannel — the RESTCONF {+restconf}/data
+    running-datastore shape, with RPCs under /operations/.
+  - >-
+    A server-side YANG module library: "the server implements the ietf-yang-library module, which
+    identifies all the YANG modules used by the server", exposed at /rest/modules-state.
+  - >-
+    Resource API version advertised as a Content-Type parameter, e.g.
+    "application/yang-data+xml;version=2.0.0".
+  buyer_impact: >-
+    A NETCONF/YANG or RESTCONF-literate operations team integrates a Brocade fabric with the same
+    tooling it already uses for routers and switches from other vendors — pyang, ietf-yang-library
+    discovery, model-driven telemetry pipelines — instead of writing a bespoke connector. The 41
+    Brocade-specific YANG modules are published as source at https://github.com/brocade/yang.
+  evidence: >-
+    FOS-92x-REST-API-RM104: "This API is referred to as the FOS REST API and is enabled by default
+    in Fabric OS. It follows the RESTCONF protocol defined in IETF RFC 8040 and defines data using
+    the YANG 1.1 (Yet Another Next Generation) data modeling language as defined in IETF RFC 7950."
+conformance:
+- id: restconf
+  name: RESTCONF Protocol
+  spec: RFC 8040
+  conforms: true
+  evidence: >-
+    "It follows the RESTCONF protocol defined in IETF RFC 8040" — FOS-92x-REST-API-RM104,
+    Fabric OS REST API Overview; listed again under "Standards and Related References".
+  caveats:
+  - >-
+    Partial rather than full RESTCONF: the manual notes the API uses the YANG data model
+    "but not the datastore managed with NETCONF", the root is /rest rather than the
+    RFC 8040 /restconf entry point discovered via /.well-known/host-meta, and only a fixed set of
+    request headers is accepted.
+- id: yang-1.1
+  name: YANG 1.1 Data Modeling Language
+  spec: RFC 7950
+  conforms: true
+  evidence: >-
+    "The Fabric OS REST API uses YANG 1.1 (Yet Another Next Generation) as the basis for its data
+    structure. YANG 1.1 is defined in IETF RFC 7950." 41 Brocade-specific modules; sources at
+    https://github.com/brocade/yang.
+- id: ietf-yang-library
+  name: YANG Library
+  spec: RFC 8525
+  conforms: true
+  evidence: >-
+    "In the 'modules-state/module' list, the server implements the ietf-yang-library module, which
+    identifies all the YANG modules used by the server." Reachable at /rest/modules-state
+    (RBAC None).
+- id: yang-1.0
+  name: YANG Data Modeling Language (1.0)
+  spec: RFC 6020
+  conforms: true
+  evidence: >-
+    Cited alongside RFC 7950 in the manual's YANG language discussion; the module set is
+    documented against both revisions.
+- id: percent-encoding
+  name: URI Generic Syntax / percent-encoding of reserved characters
+  spec: RFC 3986
+  conforms: true
+  evidence: >-
+    "the reserved characters ($ & + , / : ; = ? @) are not allowed in a query. You must
+    percent-encode the reserved characters as per the standards (RFC 8040 and RFC 3986)."
+- id: http-1.1
+  name: HTTP/1.1 semantics
+  spec: RFC 7231
+  conforms: true
+  evidence: >-
+    The DELETE-with-body discussion cites RFC 7231 explicitly; GET/POST/PATCH/DELETE/HEAD/OPTIONS
+    are used with their standard semantics and a published status-code table.
+- id: http-basic-auth
+  name: HTTP Basic authentication
+  spec: RFC 7617
+  conforms: true
+  evidence: >-
+    Session-less operation accepts "Authorization: Basic <Base64_authentication>"; plain-text
+    curl -u form is also documented.
+- id: fdmi
+  name: Fabric Device Management Interface
+  spec: T11 FC-GS
+  conforms: true
+  evidence: >-
+    The brocade-fdmi YANG module (module version 1.40.0) exposes FDMI HBA and port attributes
+    over the REST API; listed in "FOS REST API Modules for Fibre Channel Features".
+  note: >-
+    The Fibre Channel domain standards this API surfaces (FDMI, the FC name server, FC-SP
+    security) are T11/INCITS standards implemented by the fabric; the REST API is a model-driven
+    projection of them rather than an independent implementation.
+- id: isns
+  name: Internet Storage Name Service
+  spec: RFC 4171
+  conforms: true
+  evidence: >-
+    brocade-isns and the brocade-operation-isns-configuration / -discovery-domain /
+    -discovery-domain-set modules, added in FOS-92x-REST-API-RM101 and RM103.
+- id: lldp
+  name: Link Layer Discovery Protocol
+  spec: IEEE 802.1AB
+  conforms: true
+  evidence: brocade-lldp module (version 2.0.0), including lldp-neighbor-management-addresses.
+- id: snmp
+  name: Simple Network Management Protocol
+  spec: RFC 3411-3418
+  conforms: true
+  evidence: >-
+    Listed under "Standards and Related References"; SNMP is a parallel management surface on the
+    same switches, and the manual's scalability table budgets SNMP clients alongside REST clients.
+  note: Not exposed through the REST API itself; recorded as an adjacent conformance of the product.
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  spec: RFC 9457
+  conforms: false
+  evidence: >-
+    No application/problem+json media type appears anywhere in the reference manual. Errors are
+    the HTTP status line plus, on 500, an application message in the yang-data body.
+- id: oauth2
+  name: OAuth 2.0
+  spec: RFC 6749
+  conforms: false
+  evidence: >-
+    No OAuth surface. Authentication is HTTP Basic, a switch-issued session token, or an encrypted
+    authorization token; authorization is Fabric OS RBAC.
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: >-
+    No /.well-known/openid-configuration on any Broadcom host probed 2026-09-04; see
+    well-known/brocade-communications-systems-well-known.yml.
+- id: rfc8594
+  name: Sunset HTTP Header
+  spec: RFC 8594
+  conforms: false
+  evidence: >-
+    Deprecation is announced in the reference manual per release; no Sunset or Deprecation
+    response header is documented.
+compliance_certifications:
+  published: false
+  note: >-
+    No trust center, SOC 2, ISO 27001 or FedRAMP attestation is published for these APIs, and none
+    would be meaningful — the software runs on the customer's own switch and SANnav server, inside
+    the customer's own control boundary. Fabric OS does ship FIPS-mode configuration templates
+    (default_fips, FIPSCfg RBAC class), but the manual documents the switch setting, not a
+    third-party attestation of a Brocade-operated service. No Compliance pointer is emitted.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

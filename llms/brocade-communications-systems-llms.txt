@@ -1,0 +1,125 @@
+# Brocade Communications Systems
+
+> Brocade builds Fibre Channel SAN switching — directors, embedded switches, extension switches —
+> running Fabric OS, managed at fabric scale by SANnav. Brocade was acquired by Broadcom in 2017;
+> the IP networking business went to Extreme Networks and the Fibre Channel SAN portfolio stayed
+> with Broadcom under the Brocade brand. Both of its APIs are appliance-hosted: they run on
+> equipment the customer owns, not on a Brocade-operated endpoint.
+
+Generated 2026-09-04 by the API Evangelist enrichment pipeline from this provider's own
+documentation and registry metadata. Method: generated. Source: apis.yml and the artifacts in
+this repository. Brocade does not publish an llms.txt of its own; /llms.txt returned 404 on
+techdocs.broadcom.com and support.broadcom.com on 2026-09-04.
+
+## What you are calling
+
+- Brocade Fabric OS REST API — base `https://{switch-ip}/rest`. A RESTCONF (RFC 8040) interface
+  over YANG 1.1 (RFC 7950) data models, enabled by default in Fabric OS 8.2.0 and later. 41
+  Brocade YANG modules cover chassis, switch, ports, zoning, security, MAPS, FICON, firmware,
+  licensing, extension and IP storage.
+  Docs: https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+  Current manual (10.0.x): https://techdocs.broadcom.com/fabric-os-rest-api
+- Brocade SANnav Management Portal REST API — base `https://{sannav-host}/external-api/v1`.
+  Services: Login, Discovery, FCR, Fault, Inventory, Health Summary, User Management, RBAC,
+  Zoning, and a Proxy to the Fabric OS REST API. HTTPS only, port 443, IPv4 only.
+  Docs: https://techdocs.broadcom.com/us/en/fibre-channel-networking/sannav/management-portal-rest-api/3-0-0x.html
+
+There is no signup, no developer portal and no API key. Access is a switch or SANnav account with
+a Fabric OS RBAC role. The API is not sold separately; it ships inside firmware you already own.
+
+## How to authenticate
+
+- `POST /login` with HTTP Basic credentials returns a session token in the `Authorization`
+  response header. Replay it on every call. `POST /logout` ends the session.
+- Fabric OS 9.1.0 and later also supports session-less operation for GET only: one request does
+  login, GET and logout, with Basic auth (plain text or Base64).
+- An encrypted authorization token (base64 `user-name:auth-token`) can replace the password.
+- Permitted roles: admin, user, switchadmin, operator, zoneadmin, fabricadmin, basicswitchadmin,
+  securityadmin. `root` and `maintenance` cannot use the REST API at all.
+- Default session idle timeout: 2 hours. Default concurrent sessions per switch: 3 (configurable
+  1-10). Session-less requests do not consume a slot but need one free.
+- No OAuth, no OpenID Connect, no scopes.
+
+## Conventions you must respect
+
+- Media type: `application/yang-data+json` on both `Accept` and `Content-Type`, or omit both and
+  get XML, which is the default.
+- Only these request headers are supported: Accept, Authorization, Cache-Control, Content-Length,
+  Date, Host, User-Agent.
+- Methods: GET, POST, PATCH, DELETE, HEAD, OPTIONS. Anything else returns 405.
+- No pagination. Filtering is a query parameter on second-level container URIs only, and only on
+  modules that declare support. Percent-encode `$ & + , / : ; = ? @` (RFC 3986) — WWNs contain
+  colons.
+- `vf-id` selects the Virtual Fabric (logical switch) context.
+- Versions are discovered at runtime, not from the URL: the resource API version arrives as a
+  Content-Type parameter (`;version=2.0.0`), and per-module versions come from
+  `GET /rest/brocade-module-version`.
+
+## Pacing, and why it matters here
+
+This is not a cloud API with elastic capacity. It is a management plane on a switch that is also
+forwarding storage traffic.
+
+- No rate-limit headers, no 429. Overload appears as 502 Server Busy or 503 Service Unavailable.
+- Broadcom's own guidance: expect a response in under 30 seconds; retry up to 3 times if you do
+  not get one, or on a 503; add a one second delay between requests in large fabrics.
+- Budget for the whole fabric, not just yourself: 3 FOS REST API clients, 2 SANnav/Network Advisor
+  sessions combined, 1 SNMP client, 1 Web Tools session.
+
+## Before you write anything
+
+- There is no idempotency key. A retried `POST /operations/zone`, reboot or firmware download runs
+  twice. Retry reads freely; do not blind-retry writes.
+- Zoning is the one write surface with a real undo. Changes happen inside a switch-side
+  transaction that must be explicitly saved, and **zone transaction abort** discards it. The zone
+  fabric lock timeout is 5 minutes by default and restarts on each operation in the session.
+  Logging out cancels a dangling transaction.
+- Zoning writes require the current zone database checksum; a stale checksum fails the call. That
+  is optimistic concurrency, and it is the mechanism that stops two operators clobbering each
+  other.
+- Maximum zone database transaction size is 4 MB; over it you get 413.
+- Take a backup first: `brocade-operation-configupload` captures the running configuration,
+  `brocade-operation-configdownload` restores it. No restore window is published.
+- `brocade-operation-factory-reset` is irreversible over the API.
+- Zoning decides which hosts can see which storage. A wrong zone change is a storage outage. Treat
+  every zoning call as a change-controlled action, not a routine write.
+
+## Errors
+
+HTTP status codes only — this API does not implement RFC 9457 problem+json. 400 invalid request,
+403 RBAC denial, 404 resource or node not found, 405 method not allowed, 413 entity too large,
+414 URI too large, 415 unsupported media type, 500 with the application error message in the body,
+501 unknown operation, 502 server busy, 503 recoverable server error.
+Full catalog: errors/brocade-communications-systems-problem-types.yml
+
+## Client libraries
+
+- `brocade.fos` Ansible collection — 2.1.0, published 2026-04-30, by the Brocade Automation Team.
+  https://galaxy.ansible.com/ui/repo/published/brocade/fos/ · https://github.com/brocade/ansible
+  This is the maintained one.
+- `pyfos` Python SDK — 2.0.1, published 2021-03-06 to PyPI by Brocade Communications Systems LLC.
+  https://pypi.org/project/pyfos/ · https://github.com/brocade/pyfos
+  It has not shipped a release in five years while the API's own reference manual has been revised
+  four times. Read it as reference code, not as a supported client.
+- YANG module sources: https://github.com/brocade/yang
+
+## Security
+
+Brocade runs a named PSIRT for the Fibre Channel line. Report to brocade.sirt@broadcom.com,
+PGP key 0xEF02C31E. Brocade is a MITRE CNA and assigns CVEs; there is no bug bounty.
+Policy: https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/21739
+Advisories: https://support.broadcom.com/web/ecx/security-advisory?segment=BSN
+
+## What does not exist
+
+No MCP server, no A2A agent card, no GraphQL, no AsyncAPI or webhook surface, no OAuth, no
+sandbox, no status page, no /.well-known/ documents on any Broadcom host, no published API
+pricing. Several of these are genuine N/A for on-premises software rather than gaps — there is no
+Brocade-operated endpoint whose uptime a status page could report.
+
+## Artifacts in this profile
+
+- openapi/ — six OpenAPI 3.2 documents covering 15 operations across 6 of the 41 YANG modules
+- authentication/, conventions/, errors/, lifecycle/, changelog/, conformance/
+- rate-limits/, plans/, packages/, data-model/, mcp/ (candidate only), security/, well-known/
+- skills/ — packaged agent skills grounded in the operationIds above

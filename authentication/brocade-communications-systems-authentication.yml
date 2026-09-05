@@ -1,21 +1,126 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/brocade-communications-systems-openapi.yml
+generated: '2026-09-04'
+method: searched
+source: >-
+  https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+  and the first-party reference manual PDF FOS-92x-REST-API-RM104 (February 24, 2026),
+  https://techdocs.broadcom.com/content/dam/broadcom/techdocs/us/en/pdf/fc-networking/software-restapi/fos-92x-restapi.pdf
+docs: >-
+  https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+provider: Brocade Communications Systems
+providerId: brocade-communications-systems
+description: >-
+  Authentication profile for the Brocade Fabric OS REST API and the Brocade SANnav Management
+  Portal REST API. Both are appliance-hosted: credentials are switch or SANnav local/remote
+  accounts, not tenant API keys issued by a vendor portal. There is no OAuth 2.0 or OpenID
+  Connect surface on either API.
 summary:
   types:
-  - apiKey
   - http
+  - apiKey
   api_key_in:
   - header
+  oauth2: false
+  openid_connect: false
+  mutual_tls: false
+  key_issuance: appliance-local account (no vendor-issued API key)
 schemes:
 - name: BasicAuth
   type: http
   scheme: basic
+  api: Brocade Fabric OS REST API
+  description: >-
+    HTTP Basic credentials (switch user name and password) presented to POST /login, or presented
+    directly on a GET in session-less mode. Plain-text (curl -u) and Base64
+    ("Authorization: Basic <base64>") forms are both documented.
   sources:
-  - openapi/brocade-communications-systems-openapi.yml
+  - openapi/brocade-communications-systems-session-api-openapi.yml
+  - FOS-92x-REST-API-RM104 "Using the Brocade FOS REST API"
 - name: SessionToken
   type: apiKey
   in: header
   parameter: Authorization
+  api: Brocade Fabric OS REST API
+  description: >-
+    POST /login returns a session authorization token in the Authorization response header; every
+    subsequent request in the session replays it in the Authorization request header. POST /logout
+    ends the session.
   sources:
-  - openapi/brocade-communications-systems-openapi.yml
+  - openapi/brocade-communications-systems-session-api-openapi.yml
+  - FOS-92x-REST-API-RM104 "Logging In" / "Logging Out"
+- name: EncryptedAuthorizationToken
+  type: apiKey
+  in: header
+  parameter: Authorization
+  api: Brocade Fabric OS REST API
+  description: >-
+    An alternative to a password: a base64-encoded `user-name:auth-token` pair generated on the
+    switch and presented at login. Documented under "Generating an Encrypted Authorization Token".
+  sources:
+  - FOS-92x-REST-API-RM104 "Encrypted Authorization Token"
+flows:
+  session_based:
+    login: POST /login
+    logout: POST /logout
+    token_location: Authorization header (request and login response)
+    session_timeout: >-
+      2 hours by default. "REST operations are not permitted after the session timeout period
+      expires. The default REST session timeout is 2 hours." Follows the global HTTPS session
+      timeout set with configurechassis / webtools attributes.
+    concurrent_sessions: 3 by default, configurable 1-10 per switch or chassis (mgmtapp --config -maxrestsession)
+    keepalive: Disabled by default; recommended to enable for HTTPS (mgmtapp --enable keepalive)
+  session_less:
+    supported: true
+    since: Fabric OS 9.1.0
+    methods:
+    - GET
+    description: >-
+      A single request performs login, the GET, and logout. Only HTTP Basic (plain text or
+      Base64) is accepted. Session-less requests do not count toward the maximum session count,
+      but at least one REST session slot must be free to execute one.
+authorization:
+  model: role-based access control (RBAC), enforced by Fabric OS
+  permitted_roles:
+  - admin
+  - user
+  - switchadmin
+  - operator
+  - zoneadmin
+  - fabricadmin
+  - basicswitchadmin
+  - securityadmin
+  denied_roles:
+  - root
+  - maintenance
+  per_resource: >-
+    Each REST URL carries an RBAC class and a context type (chassis, vf, or both), inspectable on
+    the switch with `mgmtapp --show rbacinfo`. /rest/login, /rest/logout, /rest/auth-token,
+    /rest/brocade-module-version and /rest/modules-state carry RBAC "None".
+  scopes: >-
+    No OAuth scopes exist. Authorization is by Fabric OS role and per-URL RBAC class, so no
+    scopes/ artifact is emitted for this provider.
+transport:
+  https_required: true
+  note: >-
+    A valid HTTPS certificate must be installed on the switch and HTTPS enabled before REST
+    operations. SANnav supports HTTPS only, default port 443, and is reachable by IPv4 address
+    only.
+apis:
+- name: Brocade Fabric OS REST API
+  baseURL: https://{switch-ip}/rest
+  schemes:
+  - BasicAuth
+  - SessionToken
+  - EncryptedAuthorizationToken
+- name: Brocade SANnav Management Portal REST API
+  baseURL: https://{sannav-host}/external-api/v1
+  schemes:
+  - BasicAuth
+  - SessionToken
+  note: >-
+    SANnav documents both session-based and session-less operation and a Login service alongside
+    Discovery, FCR, Fault, Inventory, Health Summary, User Management, RBAC, Zoning and a Proxy
+    to the Fabric OS REST API. Exact header names are published in the appliance-hosted resource
+    reference; not restated here because they were not read first-hand.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,137 @@
+generated: '2026-09-04'
+method: derived
+source: >-
+  openapi/*.yml in this repository, plus a search for a published server across
+  github.com/brocade (27 public repos), the npm registry, and the Broadcom TechDocs / support
+  surface on 2026-09-04.
+provider: Brocade Communications Systems
+providerId: brocade-communications-systems
+status: candidate
+description: >-
+  Brocade publishes no MCP server. This is a derived candidate tool list — what an MCP server over
+  the Fabric OS REST API would expose if someone built one. It is not installable and no endpoint
+  exists; nothing here should be read as an agent surface Brocade ships.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: searched
+  note: >-
+    Searched github.com/brocade, the npm registry, and Broadcom's documentation and support
+    surface on 2026-09-04. The only Brocade-named MCP servers on GitHub are third-party hobby
+    projects (vespo92/BrocadeICXMCP, emesix/switchcraft) and they target the Brocade ICX
+    IP-switching line, which left the company with the Ruckus/Extreme divestitures. Nothing
+    first-party exists. No endpoint is invented here.
+constraints:
+  note: >-
+    An MCP server for this API cannot be hosted by the vendor. The Fabric OS REST API lives on a
+    customer's switch at https://{switch-ip}/rest, behind the customer's management network, so
+    any real server would have to be local-stdio or customer-deployed, holding switch credentials
+    and a Fabric OS RBAC role. The concurrency budget is tight — three concurrent REST sessions by
+    default, three recommended client instances per fabric — so an agent-driven client shares a
+    scarce resource with SANnav and Web Tools.
+candidate_tools:
+- name: fos_login
+  rest: login
+  operation: POST /login
+  consequence: write
+  description: Open a Fabric OS REST session and obtain the Authorization token.
+  note: Session management; an MCP server would hold this internally rather than expose it as a tool.
+- name: fos_logout
+  rest: logout
+  operation: POST /logout
+  consequence: write
+  description: End the Fabric OS REST session and release its slot against the maxrestsession cap.
+- name: get_chassis
+  rest: getChassis
+  operation: GET /running/brocade-chassis/chassis
+  consequence: read
+  description: Read chassis configuration and attributes.
+- name: update_chassis
+  rest: patchChassis
+  operation: PATCH /running/brocade-chassis/chassis
+  consequence: write
+  reversible: false
+  description: Update chassis configuration.
+- name: get_switch
+  rest: getSwitch
+  operation: GET /running/brocade-fibrechannel-switch/fibrechannel-switch
+  consequence: read
+  description: Read Fibre Channel switch attributes.
+- name: update_switch
+  rest: patchSwitch
+  operation: PATCH /running/brocade-fibrechannel-switch/fibrechannel-switch
+  consequence: write
+  reversible: false
+  description: Update Fibre Channel switch attributes, including enabling or disabling the switch.
+- name: list_fc_interfaces
+  rest: getFcInterfaces
+  operation: GET /running/brocade-interface/fibrechannel
+  consequence: read
+  description: List Fibre Channel interfaces (ports) on the switch.
+- name: get_fc_interface_statistics
+  rest: getFcInterfaceStatistics
+  operation: GET /running/brocade-interface/fibrechannel-statistics
+  consequence: read
+  description: Read per-port Fibre Channel counters and error statistics.
+- name: get_defined_zoning
+  rest: getDefinedZoning
+  operation: GET /running/brocade-zone/defined-configuration
+  consequence: read
+  description: Read the defined zone database — zones, aliases and zone configurations.
+- name: get_effective_zoning
+  rest: getEffectiveZoning
+  operation: GET /running/brocade-zone/effective-configuration
+  consequence: read
+  description: Read the zone configuration currently enforced in the fabric.
+- name: update_defined_zoning
+  rest: patchDefinedZoning
+  operation: PATCH /running/brocade-zone/defined-configuration
+  consequence: write
+  reversible: true
+  reversal: Zone transaction abort, within the 5-minute default zone fabric lock timeout.
+  description: >-
+    Modify the defined zone database inside a switch-side transaction. Requires the current zone
+    database checksum; a stale checksum fails the operation.
+- name: run_zone_operation
+  rest: zoneOperation
+  operation: POST /operations/zone
+  consequence: write
+  reversible: true
+  reversal: Zone transaction abort before save.
+  description: >-
+    Activate, disable, save or abort a zone configuration. This is the operation that changes
+    which hosts can see which storage — the single highest-consequence call on the surface.
+- name: config_upload
+  rest: configUpload
+  operation: POST /operations/configupload
+  consequence: write
+  description: >-
+    Capture the switch configuration to a remote host. Read-like in effect; the natural "take a
+    backup first" step before any change.
+- name: config_download
+  rest: configDownload
+  operation: POST /operations/configdownload
+  consequence: write
+  reversible: partial
+  description: Apply a saved configuration to the switch. The restore half of the pair above.
+- name: show_operation_status
+  rest: showStatus
+  operation: GET /operations/show-status
+  consequence: read
+  description: >-
+    Poll the status of an asynchronous RPC by its message-id
+    (POST /operations/show-status/message-id/<id> in the reference manual).
+coverage:
+  rest_operations_in_repo: 15
+  candidate_tools: 15
+  note: >-
+    The 15 operations captured in openapi/ are a documented subset. Fabric OS 9.2.1 publishes 41
+    Brocade YANG modules — access gateway, MAPS, FICON, firmware, licensing, security, extension,
+    IP storage, name server, FDMI and more — so a complete server over this API would be an order
+    of magnitude larger. The gap is a harvesting gap in this repository, not a limit of the API.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

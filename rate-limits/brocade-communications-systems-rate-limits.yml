@@ -1,99 +1,135 @@
 specification: API Commons Rate Limits
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+generated: '2026-09-04'
+method: searched
+source: >-
+  FOS-92x-REST-API-RM104 sections "Scalability Recommendations for FOS REST API Clients",
+  "Best Practices for FOS REST API Clients", "REST Session Count Limit",
+  "Configuration of Fabric OS REST Interface Session Values" and Table 4 "Supported HTTP Status
+  Codes",
+  https://techdocs.broadcom.com/content/dam/broadcom/techdocs/us/en/pdf/fc-networking/software-restapi/fos-92x-restapi.pdf
+docs: >-
+  https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
 provider: Brocade Communications Systems
 providerId: brocade-communications-systems
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+modified: '2026-09-04'
 tags:
-  - Data Networking
-  - Fibre Channel
-  - IP Networking
-  - Networking
-  - SAN
-  - Storage Networking
-  - Switches
-  - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Brocade Communications Systems API surface.
-  Captures per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold
-  values to be replaced with published provider limits.
+- Fabric OS
+- Fibre Channel
+- Rate Limiting
+- SAN
+- Session Limits
+description: >-
+  Published throughput and concurrency constraints for the Brocade Fabric OS REST API. This
+  replaces a 2026-05-04 scaffold that carried invented per-minute quotas and X-RateLimit-* headers
+  the API does not send. Brocade does not rate-limit by request count: it caps concurrent
+  management sessions on the switch and publishes client-side pacing guidance instead.
+limit_count: 4
+model: concurrent-session-cap
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  limit: null
+  remaining: null
+  reset: null
+  retryAfter: null
+  policy: null
+  note: >-
+    No rate-limit response headers are documented. The only supported request headers are Accept,
+    Authorization, Cache-Control, Content-Length, Date, Host and User-Agent, and no RateLimit-*
+    or Retry-After header appears anywhere in the reference manual.
 responseCodes:
-  throttled: 429
-  quotaExceeded: 429
+  throttled: null
+  quotaExceeded: null
+  serverBusy: 502
   serviceUnavailable: 503
+  note: >-
+    429 Too Many Requests is not in the API's supported status-code table. Overload surfaces as
+    502 Server Busy or 503 Service Unavailable, and exceeding the session cap fails the login with
+    an error message rather than a distinct status.
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Brocade Fabric OS REST API
-      - Brocade SANnav Management Portal REST API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Brocade Fabric OS REST API
-      - Brocade SANnav Management Portal REST API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Brocade Fabric OS REST API
-      - Brocade SANnav Management Portal REST API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Brocade Fabric OS REST API
-      - Brocade SANnav Management Portal REST API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Brocade Fabric OS REST API
-      - Brocade SANnav Management Portal REST API
+- name: Concurrent REST sessions per switch or chassis
+  scope: switch
+  metric: concurrent_sessions
+  limit: 3
+  configurable: true
+  min: 1
+  max: 10
+  configured_with: mgmtapp --config -maxrestsession <count>
+  applies:
+  - Brocade Fabric OS REST API
+  evidence: >-
+    "The default limit for FOS REST API sessions is three sessions, but the maximum number of
+    sessions is configurable from 1 to 10." Raising it "may negatively affect latency in a fabric".
+- name: Concurrent FOS REST API client instances (recommended)
+  scope: fabric
+  metric: concurrent_client_instances
+  limit: 3
+  applies:
+  - Brocade Fabric OS REST API
+  evidence: >-
+    Table 1, "Total Number of Concurrent Instances of Management Applications": FOS REST API
+    clients 3 (includes ASCG), alongside SANnav 2, Network Advisor 2, SNMP client 1, Web Tools 1.
+    SANnav and Network Advisor combined should not exceed 2.
+- name: Recommended inter-request pacing
+  scope: client
+  metric: delay_between_requests
+  limit: 1
+  unit: second
+  applies:
+  - Brocade Fabric OS REST API
+  evidence: >-
+    "For FOS REST API clients to have predictable and stable performance on Brocade platforms, it
+    is recommended to add a one second delay between each request." Not required in limited-scale
+    fabrics.
+- name: Zone database transaction size
+  scope: operation
+  metric: request_body_bytes
+  limit: 4194304
+  unit: bytes
+  applies:
+  - Brocade Fabric OS REST API
+  evidence: >-
+    "The maximum zone database transaction size that FOS API REST operations can handle is 4 MB."
+    Exceeding it returns 413 Request Entity Too Large.
+timeouts:
+- name: REST session idle timeout
+  value: 2
+  unit: hours
+  configurable: true
+  evidence: >-
+    "REST operations are not permitted after the session timeout period expires. The default REST
+    session timeout is 2 hours." Follows the global HTTPS session timeout in configurechassis /
+    webtools attributes.
+- name: Zone fabric lock timeout
+  value: 5
+  unit: minutes
+  configurable: true
+  evidence: >-
+    "The zone fabric lock timeout value is configurable and the default time out value is 5
+    minutes." The timer restarts on each successive zoning operation in the session.
+- name: Expected switch response time
+  value: 30
+  unit: seconds
+  evidence: >-
+    "The normal response time from a switch is less than 30 seconds for an individual request."
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+- name: Retry
+  description: >-
+    "If a response to a request is not received in 30 seconds, the FOS REST API client should
+    retry the request up to 3 times. If the switch responds with a 503 Service Unavailable, the
+    FOS REST API client should use the same retry logic."
+- name: Retry safety
+  description: >-
+    No idempotency mechanism backs these retries — see conventions/. Retrying a mutating POST
+    (reboot, firmwaredownload, factory-reset) can execute it twice. Retry reads freely; guard
+    writes with the zone transaction or with an out-of-band check.
+sannav:
+  documented_limits: false
+  note: >-
+    The SANnav Management Portal REST API reference publishes no rate limits. Its constraint is
+    the same fabric-side budget: no more than two concurrent SANnav/Network Advisor sessions per
+    switch.
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com

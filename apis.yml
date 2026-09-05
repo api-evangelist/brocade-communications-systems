@@ -66,6 +66,11 @@ apis:
   - type: GettingStarted
     url: >-
       https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x/v26395730/v24190001.html
+  - type: APIReference
+    url: https://techdocs.broadcom.com/fabric-os-rest-api
+  - type: SourceCode
+    url: https://github.com/brocade/yang
+    x-evidence: Brocade FabricOS YANG modules — the source data models this RESTCONF API projects.
 - aid: brocade-communications-systems:sannav-rest-api
   name: Brocade SANnav Management Portal REST API
   description: >-
@@ -95,6 +100,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/brocade-communications-systems-chassis-api-openapi.yml
+  - type: Overlay
+    url: overlays/brocade-communications-systems-chassis-api-overlay.yaml
 - aid: brocade-communications-systems:brocade-communications-systems-interfaces-api
   name: Brocade Communications Systems Interfaces API
   description: The Interfaces API from Brocade Communications Systems — 2 operation(s) for interfaces.
@@ -106,6 +113,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/brocade-communications-systems-interfaces-api-openapi.yml
+  - type: Overlay
+    url: overlays/brocade-communications-systems-interfaces-api-overlay.yaml
 - aid: brocade-communications-systems:brocade-communications-systems-operations-api
   name: Brocade Communications Systems Operations API
   description: The Operations API from Brocade Communications Systems — 4 operation(s) for operations.
@@ -118,6 +127,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/brocade-communications-systems-operations-api-openapi.yml
+  - type: Overlay
+    url: overlays/brocade-communications-systems-operations-api-overlay.yaml
 - aid: brocade-communications-systems:brocade-communications-systems-session-api
   name: Brocade Communications Systems Session API
   description: The Session API from Brocade Communications Systems — 2 operation(s) for session.
@@ -129,6 +140,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/brocade-communications-systems-session-api-openapi.yml
+  - type: Overlay
+    url: overlays/brocade-communications-systems-session-api-overlay.yaml
 - aid: brocade-communications-systems:brocade-communications-systems-switch-api
   name: Brocade Communications Systems Switch API
   description: The Switch API from Brocade Communications Systems — 1 operation(s) for switch.
@@ -140,6 +153,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/brocade-communications-systems-switch-api-openapi.yml
+  - type: Overlay
+    url: overlays/brocade-communications-systems-switch-api-overlay.yaml
 - aid: brocade-communications-systems:brocade-communications-systems-zoning-api
   name: Brocade Communications Systems Zoning API
   description: The Zoning API from Brocade Communications Systems — 2 operation(s) for zoning.
@@ -151,41 +166,90 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/brocade-communications-systems-zoning-api-openapi.yml
+  - type: Overlay
+    url: overlays/brocade-communications-systems-zoning-api-overlay.yaml
 common:
   - type: ParentCompany
     url: https://apis.io/providers/broadcom/
     name: Broadcom
     x-relationship: acquired
     x-evidence: "Brocade was acquired by Broadcom in 2017."
-  - type: AgenticAccess
-    url: agentic-access/brocade-communications-systems-agentic-access.yml
-  - type: DomainSecurity
-    url: security/brocade-communications-systems-domain-security.yml
-  - type: Authentication
-    url: authentication/brocade-communications-systems-authentication.yml
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/brocade
   - type: Website
     url: https://www.broadcom.com/products/fibre-channel-networking
   - type: Documentation
-    url: https://techdocs.broadcom.com/us/en/fibre-channel-networking.html
+    url: >-
+      https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+  - type: APIReference
+    url: https://techdocs.broadcom.com/fabric-os-rest-api
   - type: Portal
-    url: https://techdocs.broadcom.com/us/en/fibre-channel-networking.html
+    url: https://techdocs.broadcom.com/
   - type: Support
     url: https://www.broadcom.com/support/fibre-channel-networking
+  - type: Community
+    url: https://community.broadcom.com/fibrechannelnetworking/home
   - type: TermsOfService
     url: https://www.broadcom.com/company/legal/terms-of-use
   - type: PrivacyPolicy
     url: https://www.broadcom.com/company/legal/privacy/policy
   - type: GitHubOrg
     url: https://github.com/brocade
-  - type: Community
-    url: https://community.broadcom.com/t5/Fibre-Channel-SAN-Forums/bd-p/fibre
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/brocade
+  - type: Authentication
+    url: authentication/brocade-communications-systems-authentication.yml
+  - type: Conventions
+    url: conventions/brocade-communications-systems-conventions.yml
+  - type: ErrorCatalog
+    url: errors/brocade-communications-systems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/brocade-communications-systems-lifecycle.yml
+  - type: Deprecation
+    url: lifecycle/brocade-communications-systems-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/brocade-communications-systems-changelog.yml
+  - type: Conformance
+    url: conformance/brocade-communications-systems-conformance.yml
+  - type: DataModel
+    url: data-model/brocade-communications-systems-data-model.yml
+  - type: Packages
+    url: packages/brocade-communications-systems-packages.yml
+  - type: SDKs
+    url: packages/brocade-communications-systems-packages.yml
+  - type: RateLimits
+    url: rate-limits/brocade-communications-systems-rate-limits.yml
+  - type: Plans
+    url: plans/brocade-communications-systems-plans-pricing.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: LLMsTxt
+    url: llms/brocade-communications-systems-llms.txt
+  - type: AgenticAccess
+    url: agentic-access/brocade-communications-systems-agentic-access.yml
+  - type: DomainSecurity
+    url: security/brocade-communications-systems-domain-security.yml
+  - type: VulnerabilityDisclosure
+    url: security/brocade-communications-systems-vulnerability-disclosure.yml
+  - type: Security
+    url: security/brocade-communications-systems-vulnerability-disclosure.yml
+  - type: X-MCPServerCandidate
+    url: mcp/brocade-communications-systems-mcp.yml
+    x-status: candidate
+    x-evidence: >-
+      Derived candidate tool list only. Brocade publishes no MCP server; deployment.mode is none.
 
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 
 created: '2026-03-23'
-modified: '2026-04-21'
+modified: '2026-09-04'
 specificationVersion: '0.23'
+
+x-enrichment:
+  date: '2026-09-04'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v3
+x-parent: broadcom
+x-relationship: acquisition
+x-acquired: 2017

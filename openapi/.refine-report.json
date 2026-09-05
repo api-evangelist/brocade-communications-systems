@@ -19,6 +19,14 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
+  "notes": [
+    "brocade-communications-systems-chassis-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "brocade-communications-systems-interfaces-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "brocade-communications-systems-operations-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "brocade-communications-systems-session-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "brocade-communications-systems-switch-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "brocade-communications-systems-zoning-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
   "skipped": []
 }

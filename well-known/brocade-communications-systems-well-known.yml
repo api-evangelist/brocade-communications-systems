@@ -1,0 +1,167 @@
+generated: '2026-09-04'
+method: probed
+source: >-
+  Anonymous HTTPS GET of the named /.well-known/ path list against every host this record knows,
+  2026-09-04. Nothing was saved because no path returned a real document.
+provider: Brocade Communications Systems
+providerId: brocade-communications-systems
+description: >-
+  Well-known discovery probe. Brocade's two catalogued APIs run on customer-owned appliances
+  (https://{switch-ip}/rest and https://{sannav-host}/external-api/v1), so there is no
+  provider-operated API host to probe; the hosts below are the corporate, documentation,
+  support and community hosts named in apis.yml plus the retired brocade.com domain.
+summary:
+  hosts_probed: 7
+  documents_found: 0
+  note: >-
+    Zero hits. techdocs.broadcom.com, community.broadcom.com and brocade.com answer 200 to every
+    /.well-known/ path with an HTML page (the site root or the community home), which is a
+    catch-all shell and not a document — recorded as a miss, and no WellKnown or SecurityTxt
+    pointer is emitted in apis.yml. broadcom.com/www.broadcom.com and support.broadcom.com
+    return honest 404s.
+hosts:
+- host: broadcom.com
+  note: Registrable domain; redirects to www.broadcom.com.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: www.broadcom.com
+  note: Corporate site and the Website pointer host.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: techdocs.broadcom.com
+  note: >-
+    Documentation host. Every /.well-known/ path 302s to the site root and returns the TechDocs
+    home page with status 200 — an SPA/AEM catch-all, not a document. Counted as a miss.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    result: html-shell
+  - path: /.well-known/openid-configuration
+    status: 200
+    result: html-shell
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    result: html-shell
+  - path: /.well-known/api-catalog
+    status: 200
+    result: html-shell
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    result: html-shell
+  - path: /.well-known/agent-card.json
+    status: 200
+    result: html-shell
+  - path: /.well-known/agent.json
+    status: 200
+    result: html-shell
+- host: community.broadcom.com
+  note: >-
+    Community host (Higher Logic). Most paths land on the community home page with 200 (catch-all
+    shell). /.well-known/oauth-authorization-server is the one path that answers with real JSON —
+    a 404 error object reading "The MCP server is not enabled for tenant BROADCOM", which is the
+    community PLATFORM's unprovisioned MCP feature, not a Brocade API surface.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    result: html-shell
+  - path: /.well-known/openid-configuration
+    status: 200
+    result: html-shell
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    result: json-error
+  - path: /.well-known/api-catalog
+    status: 200
+    result: html-shell
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: support.broadcom.com
+  note: Support portal host.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: brocade.com
+  note: >-
+    Retired company domain; every path 301s to https://www.broadcom.com/ and returns the Broadcom
+    home page with 200. Catch-all shell, counted as a miss.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    result: html-shell
+  - path: /.well-known/api-catalog
+    status: 200
+    result: html-shell
+  - path: /.well-known/agent-card.json
+    status: 200
+    result: html-shell
+  - path: /.well-known/agent.json
+    status: 200
+    result: html-shell
+- host: www.brocade.com
+  note: Retired company domain (www); same redirect to https://www.broadcom.com/.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    result: html-shell
+  - path: /.well-known/api-catalog
+    status: 200
+    result: html-shell
+  - path: /.well-known/agent-card.json
+    status: 200
+    result: html-shell
+  - path: /.well-known/agent.json
+    status: 200
+    result: html-shell
+not_probed:
+- host: '{switch-ip}'
+  reason: >-
+    The Fabric OS REST API base URL is a templated customer appliance address. There is no
+    Brocade-operated host to probe and probing a stranger's switch would be improper.
+- host: '{sannav-host}'
+  reason: >-
+    The SANnav Management Portal base URL is a templated customer-installed host. Same reason.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

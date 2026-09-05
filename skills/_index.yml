@@ -1,0 +1,56 @@
+generated: '2026-09-04'
+method: generated
+source: >-
+  openapi/*.yml in this repository plus FOS-92x-REST-API-RM104,
+  https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+provider: Brocade Communications Systems
+providerId: brocade-communications-systems
+description: >-
+  Packaged Agent Skills for the Brocade Fabric OS REST API. Every operationId referenced was
+  grepped out of the OpenAPI documents in this repository; every constraint, timeout and retry
+  rule is quoted from Brocade's own reference manual. Brocade publishes no skills or AGENTS.md of
+  its own — these are API Evangelist generations, not provider content.
+skills:
+- name: brocade-safe-zoning-change
+  file: brocade-communications-systems-safe-zoning-change.md
+  api: Brocade Fabric OS REST API
+  flow: Change which hosts can see which storage, reversibly.
+  operations:
+  - login
+  - getEffectiveZoning
+  - getDefinedZoning
+  - patchDefinedZoning
+  - zoneOperation
+  - logout
+  consequence: high
+  reversible: true
+  reversal_window: Zone fabric lock timeout, default 5 minutes.
+- name: brocade-fabric-inventory
+  file: brocade-communications-systems-fabric-inventory.md
+  api: Brocade Fabric OS REST API
+  flow: Read-only inventory and health snapshot of a switch.
+  operations:
+  - login
+  - getChassis
+  - getSwitch
+  - getFcInterfaces
+  - getFcInterfaceStatistics
+  - logout
+  consequence: none
+  reversible: na
+- name: brocade-configuration-backup-restore
+  file: brocade-communications-systems-configuration-backup-restore.md
+  api: Brocade Fabric OS REST API
+  flow: Capture a configuration before a change and restore it afterwards.
+  operations:
+  - login
+  - configUpload
+  - showStatus
+  - configDownload
+  - logout
+  consequence: high
+  reversible: partial
+  note: Save-and-restore pair; no restore window is published.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

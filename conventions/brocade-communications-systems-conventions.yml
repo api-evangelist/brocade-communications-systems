@@ -1,0 +1,175 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  FOS-92x-REST-API-RM104 (Brocade Fabric OS REST API Reference Manual, 9.2.x, February 24, 2026),
+  https://techdocs.broadcom.com/content/dam/broadcom/techdocs/us/en/pdf/fc-networking/software-restapi/fos-92x-restapi.pdf
+docs: >-
+  https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+provider: Brocade Communications Systems
+providerId: brocade-communications-systems
+description: >-
+  Cross-cutting runtime semantics for the Brocade Fabric OS REST API. The API is a RESTCONF
+  (RFC 8040) interface over YANG 1.1 (RFC 7950) data models served by the switch itself, so its
+  conventions are RESTCONF's rather than a SaaS vendor's.
+auth:
+  style: session token in Authorization header, obtained from POST /login; HTTP Basic also accepted
+  detail: authentication/brocade-communications-systems-authentication.yml
+media_types:
+  default: application/yang-data+xml
+  json: application/yang-data+json
+  note: >-
+    Media type is chosen with the Accept header on requests and reported in Content-Type on
+    responses. "If you do not specify Accept or Content-Type headers, the media type defaults to
+    XML." For JSON both headers must be set to application/yang-data+json.
+request_headers:
+  supported_only:
+  - Accept
+  - Authorization
+  - Cache-Control
+  - Content-Length
+  - Date
+  - Host
+  - User-Agent
+  note: The reference manual states these are the only request headers the API supports.
+methods:
+- GET
+- POST
+- PATCH
+- DELETE
+- HEAD
+- OPTIONS
+methods_note: An unsupported method returns 405 Method Not Allowed.
+pagination:
+  style: none
+  detail: >-
+    No pagination scheme is documented. Container URIs return the full list; there are no page,
+    cursor, limit or offset parameters and no Link header.
+filtering:
+  style: query parameter on second-level container URIs
+  detail: >-
+    "You can use a query parameter to filter or search objects returned via HTTP REST responses",
+    supported only on second-level container URIs and only by modules that declare it. Reserved
+    characters ($ & + , / : ; = ? @) must be percent-encoded per RFC 8040 and RFC 3986.
+  example: >-
+    GET <base_URI>/running/brocade-name-server/fibrechannel-name-server?vf-id=10&node-name=20%3A04%3A00%3A11%3A0d%3A75%3A00%3A09
+partitioning:
+  virtual_fabrics: >-
+    The vf-id query parameter selects the logical switch (Virtual Fabric) context. URLs are
+    classified chassis-context, vf-context, or both in `mgmtapp --show rbacinfo`.
+versioning:
+  scheme: semantic, two levels
+  resource_api_version: >-
+    Reported at runtime in the Content-Type response header, e.g.
+    "Content-Type: application/yang-data+xml;version=2.0.0". Major = backward-incompatible change
+    (such as removing a deprecated top-level container); minor = backward-compatible addition;
+    patch = backward-compatible refinement. Resource API version for Fabric OS 9.2.1 is 2.0.0.
+  module_version: >-
+    Each YANG module carries its own version, retrievable at runtime from the
+    brocade-module-version module (GET /rest/brocade-module-version, RBAC None).
+  detail: lifecycle/brocade-communications-systems-lifecycle.yml
+error_envelope:
+  format: not RFC 9457
+  detail: >-
+    Errors are reported on the HTTP status line; for 500 Internal Server Error "the response body
+    will contain the application's specific error message", formatted in the negotiated
+    yang-data media type. There is no application/problem+json surface.
+  catalog: errors/brocade-communications-systems-problem-types.yml
+request_id:
+  supported: partial
+  detail: >-
+    Long-running RPC operations return a "message-id" in the response body which is then used to
+    poll status via POST <base_URI>/operations/show-status/message-id/<id>. There is no
+    general-purpose request-id or trace header.
+rate_limit_signaling:
+  headers: none
+  detail: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After headers are documented and there is no 429
+    status in the supported status-code table. Load is governed by a concurrent-session cap and
+    published client-side pacing guidance instead.
+  catalog: rate-limits/brocade-communications-systems-rate-limits.yml
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: null
+  header: null
+  detail: >-
+    No Idempotency-Key header, no request-deduplication window and no replay-protection mechanism
+    of any kind is documented. Write safety on the mutating surface comes from a different place:
+    zoning writes run inside a switch-side transaction that must be explicitly saved or aborted,
+    and zoning operations fail outright if the client submits an incorrect zone-database checksum.
+    That is optimistic concurrency control, not idempotency, and it covers zoning only — a retried
+    POST /operations/reboot or brocade-operation-firmwaredownload will simply run twice.
+reversibility:
+  grade: verified
+  detail: >-
+    The zoning surface — the most consequential everyday write on a SAN switch — has an explicit,
+    documented reversal path with a stated window. Other mutating operations do not.
+  operations:
+  - surface: zoning transaction
+    write: >-
+      PATCH /running/brocade-zone/defined-configuration (operationId patchDefinedZoning) and the
+      zone RPCs under /operations/zone (operationId zoneOperation)
+    reversal: Zone transaction abort
+    reversal_detail: >-
+      The reference manual lists "Zone transaction abort" among the supported zoning operations.
+      An open transaction can be discarded rather than saved, leaving the defined configuration
+      untouched.
+    window: >-
+      The zone fabric lock timeout, default 5 minutes, restarted on each successive zoning
+      operation in the session. After the timeout a transaction can still be recommenced by the
+      original REST client provided no other zone user has started a transaction on the local
+      switch and the transaction has not been aborted by a zone merge or remote zone commit.
+    window_source: FOS-92x-REST-API-RM104 "Zoning Transaction Timer Restrictions"
+    graded: verified
+    note: >-
+      Logging out and back in under a new session ID cancels the previous dangling zone
+      transaction — the switch treats the new session as a different client.
+  - surface: configuration
+    write: brocade-operation-configdownload (applies a saved configuration to a switch)
+    reversal: brocade-operation-configupload (capture the current configuration before changing it)
+    window: not stated
+    graded: documented
+    note: >-
+      Upload/download is a save-and-restore pair, not an undo primitive. No restore window is
+      published, so this is recorded as documented rather than verified.
+  - surface: firmware
+    write: brocade-operation-firmwaredownload
+    reversal: not documented as a REST operation
+    graded: none
+    note: >-
+      Firmware download supports staging to a secondary partition without reboot or activation,
+      which is a rehearsal affordance, but no REST-level rollback operation is published.
+  - surface: factory reset
+    write: brocade-operation-factory-reset
+    reversal: none
+    graded: none
+    note: Irreversible over the API. Restoring state requires a previously uploaded configuration.
+dry_run_mode:
+  supported: partial
+  detail: >-
+    No general dry-run or validation-only flag. The nearest affordances are staged firmware
+    download (download without activation) and the zone transaction, which lets a client build a
+    change set and inspect it before saving.
+transaction_limits:
+  zone_database_transaction_max: 4 MB
+  zone_checksum: >-
+    "REST operations fail on zone operations using an incorrect zone database checksum" — clients
+    must read and echo the current checksum, which makes concurrent zoning writes fail fast
+    rather than silently interleave.
+client_guidance:
+  response_time_expectation: Normal response from a switch is under 30 seconds for an individual request.
+  retry: >-
+    If no response arrives within 30 seconds, retry the request up to 3 times. Apply the same
+    retry logic when the switch answers 503 Service Unavailable.
+  pacing: >-
+    "It is recommended to add a one second delay between each request" for predictable and stable
+    performance on Brocade platforms in large-scale fabrics.
+cross_links:
+  errors: errors/brocade-communications-systems-problem-types.yml
+  lifecycle: lifecycle/brocade-communications-systems-lifecycle.yml
+  authentication: authentication/brocade-communications-systems-authentication.yml
+  rate_limits: rate-limits/brocade-communications-systems-rate-limits.yml
+  conformance: conformance/brocade-communications-systems-conformance.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

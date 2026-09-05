@@ -1,0 +1,124 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  FOS-92x-REST-API-RM104 sections "FOS REST API Version History", "Deprecated and Obsolete
+  Resources in Fabric OS 9.2.1" and "Revision History",
+  https://techdocs.broadcom.com/content/dam/broadcom/techdocs/us/en/pdf/fc-networking/software-restapi/fos-92x-restapi.pdf
+docs: >-
+  https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+provider: Brocade Communications Systems
+providerId: brocade-communications-systems
+description: >-
+  Versioning, deprecation and support lifecycle for the Brocade Fabric OS REST API. The API ships
+  inside switch firmware, so its lifecycle is the firmware's: versions are Fabric OS releases,
+  deprecations are announced in the reference manual, and there is no hosted service to have a
+  status page for.
+versioning:
+  scheme: semver, at two levels
+  resource_api:
+    current: 2.0.0
+    for_release: Fabric OS 9.2.1
+    discoverable_at_runtime: true
+    mechanism: >-
+      The resource API version is returned in the Content-Type response header, e.g.
+      "Content-Type: application/yang-data+xml;version=2.0.0".
+    rules:
+      major: A backward-incompatible API change, such as removing a deprecated top-level container.
+      minor: A backward-compatible change, such as adding a top-level container name or leaf.
+      patch: A backward-compatible change, such as a new pattern for a leaf.
+  module_level:
+    mechanism: >-
+      Every YANG module carries its own revision number, retrievable from the
+      brocade-module-version module (GET /rest/brocade-module-version).
+    examples:
+    - module: brocade-chassis
+      version: 2.0.0
+    - module: brocade-fibrechannel-switch
+      version: 4.0.0
+    - module: brocade-interface
+      version: 4.0.0
+    - module: brocade-zone
+      version: 2.0.0
+    - module: brocade-maps
+      version: 4.0.0
+  in_url: false
+  note: >-
+    The base path carries no version segment. A client determines what it is talking to from the
+    Content-Type version parameter and the brocade-module-version module, not from the URL.
+deprecation_policy:
+  published: true
+  mechanism: >-
+    Deprecated and obsolete resources are enumerated per release in the reference manual, each
+    naming its replacement. Deprecated leaves also carry a "Deprecated:" note inline in the module
+    definition tables. Removal of a deprecated top-level container is explicitly defined as the
+    trigger for a major resource-API version bump.
+  headers:
+    sunset: false
+    deprecation: false
+    note: >-
+      No RFC 8594 Sunset or Deprecation response headers. Deprecation is a documentation signal,
+      not a runtime one.
+  removal_window: not stated
+deprecated_operations:
+- path: /rest/running/brocade-maps/paused-cfg
+  release: Fabric OS 9.2.1
+  status: deprecated
+  replacement: paused-cfg-v2
+- path: /rest/running/brocade-maps/group/group-type
+  release: Fabric OS 9.2.1
+  status: deprecated
+  replacement: group-type-v2
+- path: /rest/running/brocade-maps/monitoring-system-matrix
+  release: Fabric OS 9.2.1
+  status: deprecated
+  replacement: monitoring-system-matrix-v2
+- path: /rest/running/brocade-maps/dashboard-history/category
+  release: Fabric OS 9.2.1
+  status: deprecated
+  replacement: category-v2
+- path: /rest/running/brocade-security/tacacs-server
+  release: Fabric OS 9.2.1
+  status: deprecated
+  replacement: null
+- path: /rest/running/brocade-fru/wwn/generation-number
+  release: Fabric OS 9.2.1
+  status: obsolete
+  replacement: generation-number-v2
+- path: /rest/running/brocade-media/media-rdp/remote-media-signal-loss
+  release: Fabric OS 9.2.1
+  status: obsolete
+  replacement: remote-media-signal-loss-v2
+- path: /operations/brocade-operation-pcie-health
+  release: Fabric OS 9.2.1
+  status: obsolete
+  replacement: null
+deprecated_note: >-
+  Individual leaves are deprecated far more often than whole resources — brocade-extension's
+  l4-protocol (use l4-protocol-v2), admin-status/admin-status-v2, tunnel-status/tunnel-status-v2,
+  ficon/ficon-v2 and dozens more carry inline "deprecated" notes in the 9.2.x manual. The list
+  above is the manual's own resource-level roll-up, not the full leaf-level set.
+releases:
+  supported_firmware:
+  - Fabric OS 8.2.0 and later (Gen 6)
+  - Fabric OS 9.0.0 and later (Gen 7)
+  current_reference_manual: '10.0.x'
+  current_reference_manual_url: https://techdocs.broadcom.com/fabric-os-rest-api
+status_page:
+  exists: false
+  reason: >-
+    Both APIs run on customer-owned equipment — a switch and a customer-installed SANnav server.
+    There is no Brocade-operated endpoint whose uptime could be reported, so no status page
+    exists and none should. Recorded as a genuine N/A rather than a gap.
+sla:
+  published: false
+  note: >-
+    Availability is a property of the customer's own fabric. Broadcom support entitlements are
+    contractual and are not published as an API SLA.
+security_advisories:
+  published: true
+  url: https://support.broadcom.com/web/ecx/security-advisory?segment=BSN
+  note: Brocade security advisories are published on the Broadcom support portal under segment BSN.
+changelog: changelog/brocade-communications-systems-changelog.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,94 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  FOS-92x-REST-API-RM104 "Revision History",
+  https://techdocs.broadcom.com/content/dam/broadcom/techdocs/us/en/pdf/fc-networking/software-restapi/fos-92x-restapi.pdf
+docs: >-
+  https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+provider: Brocade Communications Systems
+providerId: brocade-communications-systems
+description: >-
+  Dated change history for the Brocade Fabric OS REST API. Brocade does not run a developer
+  changelog feed; the authoritative record is the Revision History chapter of the versioned
+  reference manual, which is dated per document revision and names what changed in the contract.
+scheme:
+  type: document-revision
+  identifier_format: FOS-<release>-REST-API-RM<nnn>
+  current: FOS-92x-REST-API-RM104
+  current_date: '2026-02-24'
+  api_version_at_current: 2.0.0 (resource API version, Fabric OS 9.2.1)
+  cadence: irregular; five revisions between 2023-04-28 and 2026-02-24
+  feed: none
+  note: >-
+    A separate manual line exists for the 10.0.x firmware branch
+    (https://techdocs.broadcom.com/fabric-os-rest-api), with its own revision history.
+entries:
+- version: FOS-92x-REST-API-RM104
+  date: '2026-02-24'
+  breaking: false
+  highlights:
+  - Updated the Supported Hardware and Software section.
+- version: FOS-92x-REST-API-RM103
+  date: '2024-11-15'
+  breaking: false
+  additions:
+  - brocade-fibrechannel-diagnostics
+  - brocade-ip-storage-diagnostics
+  - brocade-isns
+  - brocade-lldp/lldp-neighbor-management-addresses
+  - brocade-operation-isns-configuration
+  - brocade-operation-isns-discovery-domain
+  - brocade-operation-isns-discovery-domain-set
+  - brocade-object-server
+  - brocade-operation-slot-clear
+  - brocade-operation-slot-configuration
+  - brocade-security/sshutil-privileged-parameters
+  - brocade-supportlink/supportlink-anonymization
+  - ipStorage/configurationSize
+  highlights:
+  - Updated the FOS REST API Version History topic.
+  - Updated the YANG Modules topic to include new modules.
+  - Added roughly twenty new or changed data-type definitions (iSNS, LLDP, MAPS profile, slot configuration, storage node, tags).
+- version: FOS-92x-REST-API-RM102
+  date: '2024-03-05'
+  breaking: false
+  deprecations:
+  - Deprecated the l4-protocol leaf in the brocade-extension module (use l4-protocol-v2).
+  additions:
+  - brocade-operation-supportsave
+  - brocade-extension/traffic-control-list
+  - brocade-fru/blade
+  - brocade-maps/group
+  - brocade-media/media-rdp
+  highlights:
+  - New data types ipStorageDiagnosticPathVerify, supportsave, pki-key-pair, result-type, supportsave-option-type.
+- version: FOS-92x-REST-API-RM101
+  date: '2023-12-20'
+  breaking: false
+  additions:
+  - brocade-ip-storage
+  - brocade-ip-storage-diagnostic-reachable
+  - brocade-operation-ip-storage-arp
+  - brocade-operation-ip-storage-diagnostic-neighbor
+  - brocade-operation-ip-storage-diagnostic-path-verify
+  - brocade-operation-ip-storage-diagnostic-ping
+  - brocade-operation-ip-storage-diagnostic-reachability
+  - brocade-operation-ip-storage-diagnostic-traceroute
+  - brocade-operation-ip-storage-interface
+  - brocade-operation-ip-storage-lag
+  - brocade-operation-ip-storage-route
+  - brocade-operation-ip-storage-vlan
+  - brocade-operation-ip-storage-vrf
+  - brocade-operation-slot-clear
+  - brocade-operation-slot-stats-clear
+  - brocade-operation-traffic-class
+  highlights:
+  - The largest single expansion in the 9.2.x line — sixteen new modules, mostly IP-storage (FCIP/IP extension) management and diagnostics.
+- version: FOS-92x-REST-API-RM100
+  date: '2023-04-28'
+  breaking: false
+  highlights:
+  - Initial document version for the Fabric OS 9.2.x REST API.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

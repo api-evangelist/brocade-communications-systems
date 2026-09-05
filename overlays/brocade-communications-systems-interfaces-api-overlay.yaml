@@ -1,0 +1,109 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist overlay for Brocade Fabric OS REST Chassis Interfaces API
+  version: 1.0.0
+  x-generated: '2026-09-04'
+  x-method: generated
+  x-source: https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+    and https://techdocs.broadcom.com/content/dam/broadcom/techdocs/us/en/pdf/fc-networking/software-restapi/fos-92x-restapi.pdf
+  x-description: 'Enhancements API Evangelist derived from Brocade''s own published reference manual:
+    the documented HTTP error responses (absent from the harvested contract), the runtime session/pacing
+    constraints, the RESTCONF/YANG standards declaration, and the zoning reversal window. The base OpenAPI
+    is never mutated.'
+extends: ./../openapi/brocade-communications-systems-interfaces-api-openapi.yml
+actions:
+- target: $.info
+  description: Link the operation surface to the provider's own reference manual and record the standards
+    the contract implements.
+  update:
+    x-standards:
+    - RFC 8040 (RESTCONF)
+    - RFC 7950 (YANG 1.1)
+    - RFC 8525 (YANG Library)
+    x-api-version-discovery: Resource API version is returned as a Content-Type parameter, e.g. application/yang-data+json;version=2.0.0.
+      Per-module versions come from GET /rest/brocade-module-version.
+    x-reference-manual:
+      title: Brocade Fabric OS REST API Reference Manual, 9.2.x (FOS-92x-REST-API-RM104, 2026-02-24)
+      html: https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+      pdf: https://techdocs.broadcom.com/content/dam/broadcom/techdocs/us/en/pdf/fc-networking/software-restapi/fos-92x-restapi.pdf
+      current_release_manual: https://techdocs.broadcom.com/fabric-os-rest-api
+- target: $
+  description: Attach external documentation at the document root.
+  update:
+    externalDocs:
+      description: Brocade Fabric OS REST API Reference Manual, 9.2.x
+      url: https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-rest-api/9-2-x.html
+- target: $.info
+  description: Record the runtime constraints an agent or client must respect. Values are the provider's
+    own published figures.
+  update:
+    x-runtime-constraints:
+      concurrent_sessions_default: 3
+      concurrent_sessions_range: 1-10 (mgmtapp --config -maxrestsession)
+      recommended_client_instances_per_fabric: 3
+      session_idle_timeout: 2 hours
+      expected_response_time: under 30 seconds
+      retry_policy: Retry up to 3 times on no-response-within-30s or 503.
+      recommended_inter_request_delay: 1 second in large-scale fabrics
+      rate_limit_headers: none; 429 is not returned
+    x-idempotency:
+      supported: false
+      coverage: none
+      note: No Idempotency-Key. Retried writes execute twice. Zoning writes are guarded by a transaction
+        and a database checksum instead.
+- target: $.paths['/running/brocade-interface/fibrechannel'].get.responses
+  description: Add the documented HTTP error responses to getFcInterfaces. Fabric OS publishes one status-code
+    table for the whole API; the harvested contract carried only success responses.
+  update:
+    '400':
+      description: Bad Request — invalid request message.
+    '403':
+      description: Forbidden — access to resource denied by Fabric OS RBAC.
+    '404':
+      description: Not Found — resource target or resource node not found.
+    '405':
+      description: Method Not Allowed — method not allowed for target resource.
+    '413':
+      description: Request Entity Too Large — the request entity is too large (zone database transactions
+        cap at 4 MB).
+    '414':
+      description: Request URI Too Large.
+    '415':
+      description: Unsupported Media Type — use application/yang-data+json or the XML default.
+    '500':
+      description: Internal Server Error — operation failed; the response body carries the application's
+        specific error message.
+    '501':
+      description: Not Implemented — unknown operation.
+    '502':
+      description: Server Busy.
+    '503':
+      description: Service Unavailable — recoverable server error; retry up to 3 times.
+- target: $.paths['/running/brocade-interface/fibrechannel-statistics'].get.responses
+  description: Add the documented HTTP error responses to getFcInterfaceStatistics. Fabric OS publishes
+    one status-code table for the whole API; the harvested contract carried only success responses.
+  update:
+    '400':
+      description: Bad Request — invalid request message.
+    '403':
+      description: Forbidden — access to resource denied by Fabric OS RBAC.
+    '404':
+      description: Not Found — resource target or resource node not found.
+    '405':
+      description: Method Not Allowed — method not allowed for target resource.
+    '413':
+      description: Request Entity Too Large — the request entity is too large (zone database transactions
+        cap at 4 MB).
+    '414':
+      description: Request URI Too Large.
+    '415':
+      description: Unsupported Media Type — use application/yang-data+json or the XML default.
+    '500':
+      description: Internal Server Error — operation failed; the response body carries the application's
+        specific error message.
+    '501':
+      description: Not Implemented — unknown operation.
+    '502':
+      description: Server Busy.
+    '503':
+      description: Service Unavailable — recoverable server error; retry up to 3 times.
